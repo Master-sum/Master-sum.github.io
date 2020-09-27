@@ -1,115 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>redis持久化</title>
-    <url>/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/</url>
-    <content><![CDATA[<h2 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h2><h4 id="一、redis持久化一个是快照-RDB-另一个是AOF日志。"><a href="#一、redis持久化一个是快照-RDB-另一个是AOF日志。" class="headerlink" title="一、redis持久化一个是快照(RDB)另一个是AOF日志。"></a>一、redis持久化一个是快照(RDB)另一个是AOF日志。</h4><p>快照：内存数据的二进制序列化形式，在内存紧凑；AOF：是操作日志记录，根据日志记录将数据写入数据库中。</p>
-<h4 id="二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"><a href="#二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。" class="headerlink" title="二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"></a>二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。</h4><a id="more"></a>
-<h4 id="三、快照如何将数据写入数据库并且保持客户端与数据一致？"><a href="#三、快照如何将数据写入数据库并且保持客户端与数据一致？" class="headerlink" title="三、快照如何将数据写入数据库并且保持客户端与数据一致？"></a>三、快照如何将数据写入数据库并且保持客户端与数据一致？</h4><ol>
-<li>子进程进行数据持久化，父进程响应客户端请求响应；</li>
-<li>将数据复制出来进行修改，然后进行数据同步</li>
-<li>当子进程写入完所有数据后会用该临时文件替换旧的 RDB 文件，至此一次快照操作完成</li>
-<li>快照存在两个命令save和bgsave都是将数据保存到数据库。save是阻塞式保存，执行saveredis不能进行其他操作；bgsave是有主、子进程来进行，子进程进行创建RDB文件，主进程进行执行客户端指令。<h4 id="四、AOF如何将数据写入数据库并且保持客户端与数据一致？"><a href="#四、AOF如何将数据写入数据库并且保持客户端与数据一致？" class="headerlink" title="四、AOF如何将数据写入数据库并且保持客户端与数据一致？"></a>四、AOF如何将数据写入数据库并且保持客户端与数据一致？</h4></li>
-<li>存储redis指令，将指令保存到日志中</li>
-<li>当redis出现问题时，可以在日志中执行操作指令</li>
-<li>利用fsync保证执行命令数据不丢失<h4 id="五、redis持久化不足"><a href="#五、redis持久化不足" class="headerlink" title="五、redis持久化不足"></a>五、redis持久化不足</h4> 快照：</li>
-<li>Redis异常退出，就会丢失最后一次快照以后更改的所有数据</li>
-<li>使用于对于数据不是很重要</li>
-<li>大量数据会使得创建大量的子进程造成系统资源不足，处理时间过长<br> AOF：</li>
-<li>文件较大是恢复时较慢，需要从日志中加载操作过的指令。</li>
-<li>重写AOF是需要fsync来进行同步磁盘</li>
-<li>redis版本需要4.0 以上</li>
-</ol>
-]]></content>
-      <categories>
-        <category>redis</category>
-      </categories>
-      <tags>
-        <tag>redis</tag>
-        <tag>学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>redis异步消息队列</title>
-    <url>/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</url>
-    <content><![CDATA[<h3 id="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"><a href="#一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；" class="headerlink" title="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"></a>一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；</h3><p>假设：list为空时，pop不出数据就会一直处于pop状态，从而进入死循环，导致资源的浪费，<br>解决方案：1是给线程一个睡眠的时间。2是使用blpop和brpop，b是blocking reading阻塞式读取,blpop弹出list中的第一个元素和返回时间，当不存在元素时返回为空;brpop会阻塞队列，而且每次只会弹出一个消息，如果没有消息则会阻塞。</p>
-<h3 id="二、为了资源占用降低，可以在list为空的时候断开连接"><a href="#二、为了资源占用降低，可以在list为空的时候断开连接" class="headerlink" title="二、为了资源占用降低，可以在list为空的时候断开连接"></a>二、为了资源占用降低，可以在list为空的时候断开连接</h3><h3 id="三、锁冲突处理："><a href="#三、锁冲突处理：" class="headerlink" title="三、锁冲突处理："></a>三、锁冲突处理：</h3><ol>
-<li>抛出异常之后稍等之后重新发起请求</li>
-<li>使用sleep使得线程，暂停休息一下</li>
-<li>将请求放入延时队列中去<a id="more"></a>
-
-</li>
-</ol>
-<h3 id="四、因为没有高级特性也没有ACK保证，不能达到100-可靠；"><a href="#四、因为没有高级特性也没有ACK保证，不能达到100-可靠；" class="headerlink" title="四、因为没有高级特性也没有ACK保证，不能达到100%可靠；"></a>四、因为没有高级特性也没有ACK保证，不能达到100%可靠；</h3><h3 id="五、redis位图储存"><a href="#五、redis位图储存" class="headerlink" title="五、redis位图储存"></a>五、redis位图储存</h3><ol>
-<li>主要是用来节约空间：原理是位图操作的是位，8位=1字节（B）1024B=1KB</li>
-<li>存储量大可以达到40亿</li>
-<li>防止溢出：溢出折返、溢出保持最大值、溢出不执行</li>
-</ol>
-<h3 id="六、存取方法："><a href="#六、存取方法：" class="headerlink" title="六、存取方法："></a>六、存取方法：</h3><ol>
-<li>零存零取：存setbit w 1 0  取getbit w 1都是以位进行操作</li>
-<li>整存零取：存 set name hello 取getbit name 1 </li>
-<li>零存整取：存setbit name 1 1 取 get name </li>
-</ol>
-<p>###七、操作命令：</p>
-<p>Setbit:以位单位进行存储数据<br>Getbit:以位单位进行取出数据<br>Bitcount:统计指定范围内1的数量<br>127.0.0.1:6379&gt; set n hello<br>OK<br>127.0.0.1:6379&gt; bitcount n #查找整个n中1的个数<br>(integer) 21<br>127.0.0.1:6379&gt; bitcount n 0 1#查找第一个字符到第二字符中1的个数<br>(integer) 7<br>Bitpos:用来查找指定范围内出现的第一个0或1<br>127.0.0.1:6379&gt; bitpos n 1#查找字符中第一个1出现的位置<br>(integer) 1<br>127.0.0.1:6379&gt; bitpos n 1 1 2#查找1在第二个字符到第三个字符之间的位置<br>(integer) 9<br>127.0.0.1:6379&gt; bitpos n 0 1 2 [start] [end]#查找9在第二个字符到第三个字符之间的位置<br>(integer) 8<br>Bitfield:存在三个字令get set incrby，可以指定位片段进行读写，但是最多只能处理64个连续的位，高低位存在相反，如下图：</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>bin(ord(‘h’))<br>‘0b1101000’ #高位-低位<br>127.0.0.1:6379&gt; bitfield n get u4 0#从第一位开始取4个位，u代表是无符号的，结果等于2^0+2^1+2^1+2^0=1+2+2+1=6</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<ol>
-<li>(integer) 6</li>
-<li>0.0.1:6379&gt; bitfield n get i3 2#从第三位开始取3个位，I代表是有符号，1是负数，0是正数，位数的第一位代表正负符号。结果等于-(2^0+2^1)</li>
-<li>(integer) -3<br>incrby是针对自增的</li>
-</ol>
-]]></content>
-      <categories>
-        <category>redis</category>
-      </categories>
-      <tags>
-        <tag>redis</tag>
-        <tag>学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>redis布隆过滤器</title>
-    <url>/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
-    <content><![CDATA[<h4 id="一、什么是布隆过滤器"><a href="#一、什么是布隆过滤器" class="headerlink" title="一、什么是布隆过滤器"></a>一、什么是布隆过滤器</h4><ol>
-<li>布隆过滤器是一种高级数据结构，针对大数据的去重</li>
-<li>可以过滤看过的内容，确保不存在重复的，同时它也存在误判；但是这个误判是在可以接受的范围内</li>
-<li>在redis4.0之后发布主要是其去重的功能</li>
-<li>key经过hash函数之后获得一个hash值然后进行在位图上进行0、1标记</li>
-<li>占用空间计算：k =0.7*(1/n),f=0.6185^(1/n)，n代表元素的数量，f表示错误率；k表示hash函数的最佳数量</li>
-</ol>
-<a id="more"></a>
-
-<h4 id="二、为什么使用布隆过滤器"><a href="#二、为什么使用布隆过滤器" class="headerlink" title="二、为什么使用布隆过滤器"></a>二、为什么使用布隆过滤器</h4><ol>
-<li>针对大量数据的去重过滤，布隆过滤有效的进行并且可以节约大量的空间</li>
-<li>对于一些大量且冗余的数据可以保证去重的时候不重复</li>
-<li>防止数据库崩溃，节约查询的成本</li>
-</ol>
-<h4 id="三、怎么使用布隆过滤器"><a href="#三、怎么使用布隆过滤器" class="headerlink" title="三、怎么使用布隆过滤器"></a>三、怎么使用布隆过滤器</h4><ol>
-<li>存在两个指令：bf.add、bf.exists，添加元素和判断元素是否存在。</li>
-<li>注意redis4.0以下是不能直接使用布隆过滤。</li>
-<li>组合指令:bf.madd、bf.mexists可以一次进行多次操作</li>
-</ol>
-<h4 id="四、布隆过滤器的优缺点"><a href="#四、布隆过滤器的优缺点" class="headerlink" title="四、布隆过滤器的优缺点"></a>四、布隆过滤器的优缺点</h4><ol>
-<li>优点可以节省空间免去重复查询和过滤</li>
-<li>可以对请求进行拦截、过滤避免非法请求和频繁请求导致缓存被击穿</li>
-<li>缺点存在误判不能用于精确的过滤</li>
-</ol>
-]]></content>
-      <categories>
-        <category>redis</category>
-      </categories>
-      <tags>
-        <tag>redis</tag>
-        <tag>学习</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>http和https的区别</title>
     <url>/2020/09/26/http%E5%92%8Chttps%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
     <content><![CDATA[<h4 id="一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间"><a href="#一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间" class="headerlink" title="一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间"></a>一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间</h4><ol>
@@ -167,6 +58,168 @@
       </tags>
   </entry>
   <entry>
+    <title>redis布隆过滤器</title>
+    <url>/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
+    <content><![CDATA[<h4 id="一、什么是布隆过滤器"><a href="#一、什么是布隆过滤器" class="headerlink" title="一、什么是布隆过滤器"></a>一、什么是布隆过滤器</h4><ol>
+<li>布隆过滤器是一种高级数据结构，针对大数据的去重</li>
+<li>可以过滤看过的内容，确保不存在重复的，同时它也存在误判；但是这个误判是在可以接受的范围内</li>
+<li>在redis4.0之后发布主要是其去重的功能</li>
+<li>key经过hash函数之后获得一个hash值然后进行在位图上进行0、1标记</li>
+<li>占用空间计算：k =0.7*(1/n),f=0.6185^(1/n)，n代表元素的数量，f表示错误率；k表示hash函数的最佳数量</li>
+</ol>
+<a id="more"></a>
+
+<h4 id="二、为什么使用布隆过滤器"><a href="#二、为什么使用布隆过滤器" class="headerlink" title="二、为什么使用布隆过滤器"></a>二、为什么使用布隆过滤器</h4><ol>
+<li>针对大量数据的去重过滤，布隆过滤有效的进行并且可以节约大量的空间</li>
+<li>对于一些大量且冗余的数据可以保证去重的时候不重复</li>
+<li>防止数据库崩溃，节约查询的成本</li>
+</ol>
+<h4 id="三、怎么使用布隆过滤器"><a href="#三、怎么使用布隆过滤器" class="headerlink" title="三、怎么使用布隆过滤器"></a>三、怎么使用布隆过滤器</h4><ol>
+<li>存在两个指令：bf.add、bf.exists，添加元素和判断元素是否存在。</li>
+<li>注意redis4.0以下是不能直接使用布隆过滤。</li>
+<li>组合指令:bf.madd、bf.mexists可以一次进行多次操作</li>
+</ol>
+<h4 id="四、布隆过滤器的优缺点"><a href="#四、布隆过滤器的优缺点" class="headerlink" title="四、布隆过滤器的优缺点"></a>四、布隆过滤器的优缺点</h4><ol>
+<li>优点可以节省空间免去重复查询和过滤</li>
+<li>可以对请求进行拦截、过滤避免非法请求和频繁请求导致缓存被击穿</li>
+<li>缺点存在误判不能用于精确的过滤</li>
+</ol>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python协程</title>
+    <url>/2020/09/26/python%E5%8D%8F%E7%A8%8B/</url>
+    <content><![CDATA[<h4 id="一、什么是协程"><a href="#一、什么是协程" class="headerlink" title="一、什么是协程"></a>一、什么是协程</h4><ol>
+<li>指一个过程，这个过程与调用方协作，产出由调用方提供的值</li>
+<li>与生成器yield类似，就是需要两个方面来进行操作。比如说：yield需要next调用进行生成函数值，而y协程需要其他函数来进行调用</li>
+</ol>
+<h4 id="二、协程、进程和线程的区别"><a href="#二、协程、进程和线程的区别" class="headerlink" title="二、协程、进程和线程的区别"></a>二、协程、进程和线程的区别</h4><p>   对操作系统来说，线程是最小的执行单元，进程是最小的资源管理单元</p>
+<a id="more"></a>   
+<ol>
+<li>进程：有自己的内存空间，独立的内存地址，操作系统以进程为单位分配系统资源。</li>
+<li>线程：轻量级的进程，是CPU最小的调度单位</li>
+<li>协程：比线程更加轻量级，它不是操作系统控制的而是由程序控制的；协程在子程序中是可以中断的，一个线程可以拥有多个协程</li>
+</ol>
+<h4 id="三、yield和yield-from的区别"><a href="#三、yield和yield-from的区别" class="headerlink" title="三、yield和yield from的区别"></a>三、yield和yield from的区别</h4><pre><code>&quot;&quot;&quot;</code></pre>
+<p>yield from打开双向通道，把最外层的调用方与最内层的子生成器连接起来，这样二者可以直接发送和产出值，还可以直接<br>传入异常，而不用在位于中间的协程中添加大量处理异常的样板代码。有了这个结构，协程可以通过以前不可能的方式委托职责。<br>1、yield和yield from的区别在于后者可以省去一些循环操作<br>“””</p>
+<p>def num():<br>  print(“我是yield”)<br>  for i in range(10):<br>      yield i<br>def num1():<br>    print(“我是yield from”)<br>    yield from range(10)<br>a = list(num())<br>print(a)<br>b = list(num1())<br>print(b)</p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redis异步消息队列</title>
+    <url>/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</url>
+    <content><![CDATA[<h3 id="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"><a href="#一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；" class="headerlink" title="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"></a>一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；</h3><p>假设：list为空时，pop不出数据就会一直处于pop状态，从而进入死循环，导致资源的浪费，<br>解决方案：1是给线程一个睡眠的时间。2是使用blpop和brpop，b是blocking reading阻塞式读取,blpop弹出list中的第一个元素和返回时间，当不存在元素时返回为空;brpop会阻塞队列，而且每次只会弹出一个消息，如果没有消息则会阻塞。</p>
+<h3 id="二、为了资源占用降低，可以在list为空的时候断开连接"><a href="#二、为了资源占用降低，可以在list为空的时候断开连接" class="headerlink" title="二、为了资源占用降低，可以在list为空的时候断开连接"></a>二、为了资源占用降低，可以在list为空的时候断开连接</h3><h3 id="三、锁冲突处理："><a href="#三、锁冲突处理：" class="headerlink" title="三、锁冲突处理："></a>三、锁冲突处理：</h3><ol>
+<li>抛出异常之后稍等之后重新发起请求</li>
+<li>使用sleep使得线程，暂停休息一下</li>
+<li>将请求放入延时队列中去<a id="more"></a>
+
+</li>
+</ol>
+<h3 id="四、因为没有高级特性也没有ACK保证，不能达到100-可靠；"><a href="#四、因为没有高级特性也没有ACK保证，不能达到100-可靠；" class="headerlink" title="四、因为没有高级特性也没有ACK保证，不能达到100%可靠；"></a>四、因为没有高级特性也没有ACK保证，不能达到100%可靠；</h3><h3 id="五、redis位图储存"><a href="#五、redis位图储存" class="headerlink" title="五、redis位图储存"></a>五、redis位图储存</h3><ol>
+<li>主要是用来节约空间：原理是位图操作的是位，8位=1字节（B）1024B=1KB</li>
+<li>存储量大可以达到40亿</li>
+<li>防止溢出：溢出折返、溢出保持最大值、溢出不执行</li>
+</ol>
+<h3 id="六、存取方法："><a href="#六、存取方法：" class="headerlink" title="六、存取方法："></a>六、存取方法：</h3><ol>
+<li>零存零取：存setbit w 1 0  取getbit w 1都是以位进行操作</li>
+<li>整存零取：存 set name hello 取getbit name 1 </li>
+<li>零存整取：存setbit name 1 1 取 get name </li>
+</ol>
+<p>###七、操作命令：</p>
+<p>Setbit:以位单位进行存储数据<br>Getbit:以位单位进行取出数据<br>Bitcount:统计指定范围内1的数量<br>127.0.0.1:6379&gt; set n hello<br>OK<br>127.0.0.1:6379&gt; bitcount n #查找整个n中1的个数<br>(integer) 21<br>127.0.0.1:6379&gt; bitcount n 0 1#查找第一个字符到第二字符中1的个数<br>(integer) 7<br>Bitpos:用来查找指定范围内出现的第一个0或1<br>127.0.0.1:6379&gt; bitpos n 1#查找字符中第一个1出现的位置<br>(integer) 1<br>127.0.0.1:6379&gt; bitpos n 1 1 2#查找1在第二个字符到第三个字符之间的位置<br>(integer) 9<br>127.0.0.1:6379&gt; bitpos n 0 1 2 [start] [end]#查找9在第二个字符到第三个字符之间的位置<br>(integer) 8<br>Bitfield:存在三个字令get set incrby，可以指定位片段进行读写，但是最多只能处理64个连续的位，高低位存在相反，如下图：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>bin(ord(‘h’))<br>‘0b1101000’ #高位-低位<br>127.0.0.1:6379&gt; bitfield n get u4 0#从第一位开始取4个位，u代表是无符号的，结果等于2^0+2^1+2^1+2^0=1+2+2+1=6</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ol>
+<li>(integer) 6</li>
+<li>0.0.1:6379&gt; bitfield n get i3 2#从第三位开始取3个位，I代表是有符号，1是负数，0是正数，位数的第一位代表正负符号。结果等于-(2^0+2^1)</li>
+<li>(integer) -3<br>incrby是针对自增的</li>
+</ol>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redis持久化</title>
+    <url>/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h2><h4 id="一、redis持久化一个是快照-RDB-另一个是AOF日志。"><a href="#一、redis持久化一个是快照-RDB-另一个是AOF日志。" class="headerlink" title="一、redis持久化一个是快照(RDB)另一个是AOF日志。"></a>一、redis持久化一个是快照(RDB)另一个是AOF日志。</h4><p>快照：内存数据的二进制序列化形式，在内存紧凑；AOF：是操作日志记录，根据日志记录将数据写入数据库中。</p>
+<h4 id="二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"><a href="#二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。" class="headerlink" title="二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"></a>二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。</h4><a id="more"></a>
+<h4 id="三、快照如何将数据写入数据库并且保持客户端与数据一致？"><a href="#三、快照如何将数据写入数据库并且保持客户端与数据一致？" class="headerlink" title="三、快照如何将数据写入数据库并且保持客户端与数据一致？"></a>三、快照如何将数据写入数据库并且保持客户端与数据一致？</h4><ol>
+<li>子进程进行数据持久化，父进程响应客户端请求响应；</li>
+<li>将数据复制出来进行修改，然后进行数据同步</li>
+<li>当子进程写入完所有数据后会用该临时文件替换旧的 RDB 文件，至此一次快照操作完成</li>
+<li>快照存在两个命令save和bgsave都是将数据保存到数据库。save是阻塞式保存，执行saveredis不能进行其他操作；bgsave是有主、子进程来进行，子进程进行创建RDB文件，主进程进行执行客户端指令。<h4 id="四、AOF如何将数据写入数据库并且保持客户端与数据一致？"><a href="#四、AOF如何将数据写入数据库并且保持客户端与数据一致？" class="headerlink" title="四、AOF如何将数据写入数据库并且保持客户端与数据一致？"></a>四、AOF如何将数据写入数据库并且保持客户端与数据一致？</h4></li>
+<li>存储redis指令，将指令保存到日志中</li>
+<li>当redis出现问题时，可以在日志中执行操作指令</li>
+<li>利用fsync保证执行命令数据不丢失<h4 id="五、redis持久化不足"><a href="#五、redis持久化不足" class="headerlink" title="五、redis持久化不足"></a>五、redis持久化不足</h4> 快照：</li>
+<li>Redis异常退出，就会丢失最后一次快照以后更改的所有数据</li>
+<li>使用于对于数据不是很重要</li>
+<li>大量数据会使得创建大量的子进程造成系统资源不足，处理时间过长<br> AOF：</li>
+<li>文件较大是恢复时较慢，需要从日志中加载操作过的指令。</li>
+<li>重写AOF是需要fsync来进行同步磁盘</li>
+<li>redis版本需要4.0 以上</li>
+</ol>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redis雪崩与穿透的解决方案</title>
+    <url>/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h4 id="一、雪崩与穿透的区别："><a href="#一、雪崩与穿透的区别：" class="headerlink" title="一、雪崩与穿透的区别："></a>一、雪崩与穿透的区别：</h4><pre><code>这两个都是指的是缓存层出现问题导致的问题。一般客户端进行访问——》缓存拿到数据，缓存拿不到数据在访问数据库，避免直接操作数据库增加不必要的危险性；redis的能力读的速度是110000次/s,写的速度是81000次/s ，可以顶得住海量的读写数据。</code></pre>
+<ol>
+<li>雪崩：是指缓存层由于一些原因，使得大量的客户端数据直接到了数据库，造成数据库调用量就会暴增，造成存储层也会挂掉的情况；失去缓存的保护，海量的数据操作直接作用于数据库，就像雪崩一样直接作用到数据库。</li>
+<li>穿透：顾名思义就是数据击穿了缓存，将数据直接打在数据库。</li>
+<li>将请求放入延时队列中去<a id="more"></a>
+
+</li>
+</ol>
+<h4 id="二、造成雪崩与穿透的原因："><a href="#二、造成雪崩与穿透的原因：" class="headerlink" title="二、造成雪崩与穿透的原因："></a>二、造成雪崩与穿透的原因：</h4><p>雪崩的原因：</p>
+<ol>
+<li>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，大量数据会去直接访问DB，此时给DB很大的压力。</li>
+<li>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，大量数据会去直接访问DB，此时给DB很大的压力。<br>穿透的原因：</li>
+<li>自身程序出现不合理的代码逻辑造成</li>
+</ol>
+<p>三、怎么解决雪崩与穿透的问题</p>
+<p>四、我们常见的雪崩与穿透</p>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis进阶</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>网络七层协议</title>
     <url>/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<h4 id="一、七层协议："><a href="#一、七层协议：" class="headerlink" title="一、七层协议："></a>一、七层协议：</h4><ol>
@@ -196,32 +249,6 @@
       </categories>
       <tags>
         <tag>网络协议</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python协程</title>
-    <url>/2020/09/26/python%E5%8D%8F%E7%A8%8B/</url>
-    <content><![CDATA[<h4 id="一、什么是协程"><a href="#一、什么是协程" class="headerlink" title="一、什么是协程"></a>一、什么是协程</h4><ol>
-<li>指一个过程，这个过程与调用方协作，产出由调用方提供的值</li>
-<li>与生成器yield类似，就是需要两个方面来进行操作。比如说：yield需要next调用进行生成函数值，而y协程需要其他函数来进行调用</li>
-</ol>
-<h4 id="二、协程、进程和线程的区别"><a href="#二、协程、进程和线程的区别" class="headerlink" title="二、协程、进程和线程的区别"></a>二、协程、进程和线程的区别</h4><p>   对操作系统来说，线程是最小的执行单元，进程是最小的资源管理单元</p>
-<a id="more"></a>   
-<ol>
-<li>进程：有自己的内存空间，独立的内存地址，操作系统以进程为单位分配系统资源。</li>
-<li>线程：轻量级的进程，是CPU最小的调度单位</li>
-<li>协程：比线程更加轻量级，它不是操作系统控制的而是由程序控制的；协程在子程序中是可以中断的，一个线程可以拥有多个协程</li>
-</ol>
-<h4 id="三、yield和yield-from的区别"><a href="#三、yield和yield-from的区别" class="headerlink" title="三、yield和yield from的区别"></a>三、yield和yield from的区别</h4><pre><code>&quot;&quot;&quot;</code></pre>
-<p>yield from打开双向通道，把最外层的调用方与最内层的子生成器连接起来，这样二者可以直接发送和产出值，还可以直接<br>传入异常，而不用在位于中间的协程中添加大量处理异常的样板代码。有了这个结构，协程可以通过以前不可能的方式委托职责。<br>1、yield和yield from的区别在于后者可以省去一些循环操作<br>“””</p>
-<p>def num():<br>  print(“我是yield”)<br>  for i in range(10):<br>      yield i<br>def num1():<br>    print(“我是yield from”)<br>    yield from range(10)<br>a = list(num())<br>print(a)<br>b = list(num1())<br>print(b)</p>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>多线程</tag>
       </tags>
   </entry>
   <entry>
@@ -266,33 +293,6 @@
 <li>一个需要12KB的内存空间，不适合大量人员数据；Hyperloglog开始由稀疏矩阵存储随着统计数量的增加才会转为稠密矩阵而达到12KB。</li>
 <li>Hyperloglog存在16384个桶位，一个桶位占6个bit，固（16384*6）/8=12KB</li>
 </ol>
-]]></content>
-      <categories>
-        <category>redis</category>
-      </categories>
-      <tags>
-        <tag>redis进阶</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>redis雪崩与穿透的解决方案</title>
-    <url>/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h4 id="一、雪崩与穿透的区别："><a href="#一、雪崩与穿透的区别：" class="headerlink" title="一、雪崩与穿透的区别："></a>一、雪崩与穿透的区别：</h4><pre><code>这两个都是指的是缓存层出现问题导致的问题。一般客户端进行访问——》缓存拿到数据，缓存拿不到数据在访问数据库，避免直接操作数据库增加不必要的危险性；redis的能力读的速度是110000次/s,写的速度是81000次/s ，可以顶得住海量的读写数据。</code></pre>
-<ol>
-<li>雪崩：是指缓存层由于一些原因，使得大量的客户端数据直接到了数据库，造成数据库调用量就会暴增，造成存储层也会挂掉的情况；失去缓存的保护，海量的数据操作直接作用于数据库，就像雪崩一样直接作用到数据库。</li>
-<li>穿透：顾名思义就是数据击穿了缓存，将数据直接打在数据库。</li>
-<li>将请求放入延时队列中去<a id="more"></a>
-
-</li>
-</ol>
-<h4 id="二、造成雪崩与穿透的原因："><a href="#二、造成雪崩与穿透的原因：" class="headerlink" title="二、造成雪崩与穿透的原因："></a>二、造成雪崩与穿透的原因：</h4><p>雪崩的原因：</p>
-<ol>
-<li>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，大量数据会去直接访问DB，此时给DB很大的压力。</li>
-<li>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，大量数据会去直接访问DB，此时给DB很大的压力。<br>穿透的原因：</li>
-<li>自身程序出现不合理的代码逻辑造成</li>
-</ol>
-<p>三、怎么解决雪崩与穿透的问题</p>
-<p>四、我们常见的雪崩与穿透</p>
 ]]></content>
       <categories>
         <category>redis</category>
