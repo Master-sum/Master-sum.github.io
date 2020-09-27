@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>redis持久化</title>
-    <url>/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/</url>
+    <url>/master-sum.github.io/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/</url>
     <content><![CDATA[<h2 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h2><h4 id="一、redis持久化一个是快照-RDB-另一个是AOF日志。"><a href="#一、redis持久化一个是快照-RDB-另一个是AOF日志。" class="headerlink" title="一、redis持久化一个是快照(RDB)另一个是AOF日志。"></a>一、redis持久化一个是快照(RDB)另一个是AOF日志。</h4><p>快照：内存数据的二进制序列化形式，在内存紧凑；AOF：是操作日志记录，根据日志记录将数据写入数据库中。</p>
 <h4 id="二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"><a href="#二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。" class="headerlink" title="二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"></a>二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。</h4><a id="more"></a>
 <h4 id="三、快照如何将数据写入数据库并且保持客户端与数据一致？"><a href="#三、快照如何将数据写入数据库并且保持客户端与数据一致？" class="headerlink" title="三、快照如何将数据写入数据库并且保持客户端与数据一致？"></a>三、快照如何将数据写入数据库并且保持客户端与数据一致？</h4><ol>
@@ -31,7 +31,7 @@
   </entry>
   <entry>
     <title>redis异步消息队列</title>
-    <url>/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</url>
+    <url>/master-sum.github.io/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</url>
     <content><![CDATA[<h3 id="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"><a href="#一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；" class="headerlink" title="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"></a>一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；</h3><p>假设：list为空时，pop不出数据就会一直处于pop状态，从而进入死循环，导致资源的浪费，<br>解决方案：1是给线程一个睡眠的时间。2是使用blpop和brpop，b是blocking reading阻塞式读取,blpop弹出list中的第一个元素和返回时间，当不存在元素时返回为空;brpop会阻塞队列，而且每次只会弹出一个消息，如果没有消息则会阻塞。</p>
 <h3 id="二、为了资源占用降低，可以在list为空的时候断开连接"><a href="#二、为了资源占用降低，可以在list为空的时候断开连接" class="headerlink" title="二、为了资源占用降低，可以在list为空的时候断开连接"></a>二、为了资源占用降低，可以在list为空的时候断开连接</h3><h3 id="三、锁冲突处理："><a href="#三、锁冲突处理：" class="headerlink" title="三、锁冲突处理："></a>三、锁冲突处理：</h3><ol>
 <li>抛出异常之后稍等之后重新发起请求</li>
@@ -75,7 +75,7 @@
   </entry>
   <entry>
     <title>redis布隆过滤器</title>
-    <url>/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
+    <url>/master-sum.github.io/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
     <content><![CDATA[<h4 id="一、什么是布隆过滤器"><a href="#一、什么是布隆过滤器" class="headerlink" title="一、什么是布隆过滤器"></a>一、什么是布隆过滤器</h4><ol>
 <li>布隆过滤器是一种高级数据结构，针对大数据的去重</li>
 <li>可以过滤看过的内容，确保不存在重复的，同时它也存在误判；但是这个误判是在可以接受的范围内</li>
@@ -111,7 +111,7 @@
   </entry>
   <entry>
     <title>http和https的区别</title>
-    <url>/2020/09/26/http%E5%92%8Chttps%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <url>/master-sum.github.io/2020/09/26/http%E5%92%8Chttps%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
     <content><![CDATA[<h4 id="一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间"><a href="#一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间" class="headerlink" title="一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间"></a>一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间</h4><ol>
 <li>原理：基于TCP/IP通信协议来传递数据的协议，传输的数据类型为HTML 文件,、图片文件, 查询结果等。</li>
 <li>结构：包括请求结构(请求行、请求头、请求正文)和响应结构(响应行、响应头、响应正文)</li>
@@ -168,7 +168,7 @@
   </entry>
   <entry>
     <title>网络七层协议</title>
-    <url>/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/</url>
+    <url>/master-sum.github.io/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<h4 id="一、七层协议："><a href="#一、七层协议：" class="headerlink" title="一、七层协议："></a>一、七层协议：</h4><ol>
 <li>物理层：主要定义物理设备标准，如网线的接口类型、光纤的接口类型、各种传输介质的传输速率等</li>
 <li>数据链路层： 定义了如何格式化数据以进行传输,以及如何控制对物理介质的访问。这一层通常还提供错误检测和纠正,以确保数据的可靠传输（CRC），这一层的数据叫做帧（Frame）。</li>
@@ -200,7 +200,7 @@
   </entry>
   <entry>
     <title>python协程</title>
-    <url>/2020/09/26/python%E5%8D%8F%E7%A8%8B/</url>
+    <url>/master-sum.github.io/2020/09/26/python%E5%8D%8F%E7%A8%8B/</url>
     <content><![CDATA[<h4 id="一、什么是协程"><a href="#一、什么是协程" class="headerlink" title="一、什么是协程"></a>一、什么是协程</h4><ol>
 <li>指一个过程，这个过程与调用方协作，产出由调用方提供的值</li>
 <li>与生成器yield类似，就是需要两个方面来进行操作。比如说：yield需要next调用进行生成函数值，而y协程需要其他函数来进行调用</li>
@@ -226,7 +226,7 @@
   </entry>
   <entry>
     <title>python单例模型</title>
-    <url>/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/</url>
+    <url>/master-sum.github.io/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/</url>
     <content><![CDATA[<h4 id="一、单例模型：确保某一个类只有一个实例存在"><a href="#一、单例模型：确保某一个类只有一个实例存在" class="headerlink" title="一、单例模型：确保某一个类只有一个实例存在"></a>一、单例模型：确保某一个类只有一个实例存在</h4><p>特点：<br>1、某个类只能有一个实例<br>2、它必须自行创建这个实例<br>3、它必须自行向整个系统提供这个实例<br>实现方法：<br>1、使用模块<br>class Singleton1(object):<br>    def foo(self):<br>        print(“这是一个单例模式”)<br>singleton = Singleton1()<br>将其保存在Singleton.py中可以将其导入到其他模块并且如from Singleton1 import singleton</p>
 <a id="more"></a>  
 <p>2、使用装饰器<br>#创建一个装饰器<br>def Singleton(cls):<br>    #定义一个字典<br>    instance = {}<br>    @wraps(cls)<br>    def getinstance(<em>args,**kwargs):<br>        #判断这个类是否存在于字典中<br>        if cls not in instance:<br>            instance[cls] = cls(<em>args,</em></em>kwargs)<br>        print(instance)<br>        return instance[cls]<br>    return getinstance<br>#这里调用装饰器<br>@Singleton<br>class Myc(object):<br>    b = 1<br>m = Myc()</p>
@@ -253,7 +253,7 @@
   </entry>
   <entry>
     <title>理解Hyperloglog</title>
-    <url>/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/</url>
+    <url>/master-sum.github.io/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/</url>
     <content><![CDATA[<h4 id="一、什么是Hyperloglog"><a href="#一、什么是Hyperloglog" class="headerlink" title="一、什么是Hyperloglog"></a>一、什么是Hyperloglog</h4><ol>
 <li>Hyperloglog是一种数据结构，用来粗糙的大量数据去重统计，标准误差在0.81%。</li>
 <li>Hyperloglog指令pfadd和pfcount分别是增加计数和获取统计数<br> 127.0.0.1:6379&gt; pfadd codehole user u<br> (integer) 1<br> 127.0.0.1:6379&gt; pfcount codehole<br> (integer) 2<br> 127.0.0.1:6379&gt;<br> 3.pfmerge对两个相似的数据进行合并<a id="more"></a>
@@ -276,7 +276,7 @@
   </entry>
   <entry>
     <title>redis雪崩与穿透的解决方案</title>
-    <url>/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    <url>/master-sum.github.io/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<h4 id="一、雪崩与穿透的区别："><a href="#一、雪崩与穿透的区别：" class="headerlink" title="一、雪崩与穿透的区别："></a>一、雪崩与穿透的区别：</h4><pre><code>这两个都是指的是缓存层出现问题导致的问题。一般客户端进行访问——》缓存拿到数据，缓存拿不到数据在访问数据库，避免直接操作数据库增加不必要的危险性；redis的能力读的速度是110000次/s,写的速度是81000次/s ，可以顶得住海量的读写数据。</code></pre>
 <ol>
 <li>雪崩：是指缓存层由于一些原因，使得大量的客户端数据直接到了数据库，造成数据库调用量就会暴增，造成存储层也会挂掉的情况；失去缓存的保护，海量的数据操作直接作用于数据库，就像雪崩一样直接作用到数据库。</li>
