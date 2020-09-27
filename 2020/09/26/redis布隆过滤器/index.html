@@ -18,13 +18,13 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+    var CONFIG = {"hostname":"master-sum.github.io","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
   <meta name="description" content="一、什么是布隆过滤器 布隆过滤器是一种高级数据结构，针对大数据的去重 可以过滤看过的内容，确保不存在重复的，同时它也存在误判；但是这个误判是在可以接受的范围内 在redis4.0之后发布主要是其去重的功能 key经过hash函数之后获得一个hash值然后进行在位图上进行0、1标记 占用空间计算：k &#x3D;0.7*(1&#x2F;n),f&#x3D;0.6185^(1&#x2F;n)，n代表元素的数量，f表示错误率；k表示hash函">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis布隆过滤器">
-<meta property="og:url" content="http://example.com/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/index.html">
+<meta property="og:url" content="https://master-sum.github.io/SSS/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/index.html">
 <meta property="og:site_name" content="code change world">
 <meta property="og:description" content="一、什么是布隆过滤器 布隆过滤器是一种高级数据结构，针对大数据的去重 可以过滤看过的内容，确保不存在重复的，同时它也存在误判；但是这个误判是在可以接受的范围内 在redis4.0之后发布主要是其去重的功能 key经过hash函数之后获得一个hash值然后进行在位图上进行0、1标记 占用空间计算：k &#x3D;0.7*(1&#x2F;n),f&#x3D;0.6185^(1&#x2F;n)，n代表元素的数量，f表示错误率；k表示hash函">
 <meta property="og:locale" content="zh_CN">
@@ -36,7 +36,7 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">
+<link rel="canonical" href="https://master-sum.github.io/SSS/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">
 
 
 <script class="page-configurations">
@@ -353,7 +353,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="https://master-sum.github.io/SSS/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/1.jpg">

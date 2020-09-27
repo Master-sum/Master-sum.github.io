@@ -18,13 +18,13 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+    var CONFIG = {"hostname":"master-sum.github.io","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
   <meta name="description" content="redis持久化一、redis持久化一个是快照(RDB)另一个是AOF日志。快照：内存数据的二进制序列化形式，在内存紧凑；AOF：是操作日志记录，根据日志记录将数据写入数据库中。 二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis持久化">
-<meta property="og:url" content="http://example.com/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/index.html">
+<meta property="og:url" content="https://master-sum.github.io/SSS/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/index.html">
 <meta property="og:site_name" content="code change world">
 <meta property="og:description" content="redis持久化一、redis持久化一个是快照(RDB)另一个是AOF日志。快照：内存数据的二进制序列化形式，在内存紧凑；AOF：是操作日志记录，根据日志记录将数据写入数据库中。 二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。">
 <meta property="og:locale" content="zh_CN">
@@ -36,7 +36,7 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/">
+<link rel="canonical" href="https://master-sum.github.io/SSS/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/">
 
 
 <script class="page-configurations">
@@ -353,7 +353,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="https://master-sum.github.io/SSS/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/1.jpg">
