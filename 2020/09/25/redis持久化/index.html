@@ -21,18 +21,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="Python">
-<meta property="og:type" content="website">
-<meta property="og:title" content="code change world">
-<meta property="og:url" content="http://example.com/archives/2020/09/index.html">
+  <meta name="description" content="redis持久化一、redis持久化一个是快照(RDB)另一个是AOF日志。快照：内存数据的二进制序列化形式，在内存紧凑；AOF：是操作日志记录，根据日志记录将数据写入数据库中。 二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis持久化">
+<meta property="og:url" content="http://example.com/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/index.html">
 <meta property="og:site_name" content="code change world">
-<meta property="og:description" content="Python">
+<meta property="og:description" content="redis持久化一、redis持久化一个是快照(RDB)另一个是AOF日志。快照：内存数据的二进制序列化形式，在内存紧凑；AOF：是操作日志记录，根据日志记录将数据写入数据库中。 二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-25T14:44:46.502Z">
+<meta property="article:modified_time" content="2020-09-25T14:45:44.387Z">
 <meta property="article:author" content="Jack.bai">
+<meta property="article:tag" content="redis">
+<meta property="article:tag" content="学习">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/archives/2020/09/">
+<link rel="canonical" href="http://example.com/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/">
 
 
 <script class="page-configurations">
@@ -40,12 +44,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | code change world</title>
+  <title>redis持久化 | code change world</title>
   
 
 
@@ -183,7 +187,7 @@
   </div>
 
   <aside class="sidebar">
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -195,6 +199,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">redis持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81redis%E6%8C%81%E4%B9%85%E5%8C%96%E4%B8%80%E4%B8%AA%E6%98%AF%E5%BF%AB%E7%85%A7-RDB-%E5%8F%A6%E4%B8%80%E4%B8%AA%E6%98%AFAOF%E6%97%A5%E5%BF%97%E3%80%82"><span class="nav-number">1.0.1.</span> <span class="nav-text">一、redis持久化一个是快照(RDB)另一个是AOF日志。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BF%AB%E7%85%A7%E4%BD%BF%E7%94%A8COW%EF%BC%88CopyOnWrite-%E5%86%99%E6%97%B6%E5%A4%8D%E5%88%B6-%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9C%BA%E5%88%B6%E8%BF%9B%E8%A1%8C%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%8Cfork%E6%98%AF%E7%94%B1%E5%87%BD%E6%95%B0glibc%E7%9A%84%E4%B8%80%E4%B8%AA%E5%AD%90%E8%BF%9B%E7%A8%8B%EF%BC%8C%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E6%98%AF%E7%94%B1%E5%AD%90%E8%BF%9B%E7%A8%8Bfork%E6%9D%A5%E5%AE%8C%E6%88%90%EF%BC%8C%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%B7%E6%B1%82%E7%94%B1%E7%88%B6%E8%BF%9B%E7%A8%8B%E5%AE%8C%E6%88%90%E3%80%82"><span class="nav-number">1.0.2.</span> <span class="nav-text">二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%BF%AB%E7%85%A7%E5%A6%82%E4%BD%95%E5%B0%86%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B9%B6%E4%B8%94%E4%BF%9D%E6%8C%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8E%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%EF%BC%9F"><span class="nav-number">1.0.3.</span> <span class="nav-text">三、快照如何将数据写入数据库并且保持客户端与数据一致？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B%E3%80%81AOF%E5%A6%82%E4%BD%95%E5%B0%86%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B9%B6%E4%B8%94%E4%BF%9D%E6%8C%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8E%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%EF%BC%9F"><span class="nav-number">1.0.4.</span> <span class="nav-text">四、AOF如何将数据写入数据库并且保持客户端与数据一致？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%94%E3%80%81redis%E6%8C%81%E4%B9%85%E5%8C%96%E4%B8%8D%E8%B6%B3"><span class="nav-number">1.0.5.</span> <span class="nav-text">五、redis持久化不足</span></a></li></ol></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -339,212 +344,129 @@
 </noscript>
 
 
-    <div class="main-inner archive posts-collapse">
+    <div class="main-inner post posts-expand">
       
 
       
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="Jack.bai">
+      <meta itemprop="description" content="Python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code change world">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          redis持久化
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-09-25 22:44:46 / 修改时间：22:45:44" itemprop="dateCreated datePublished" datetime="2020-09-25T22:44:46+08:00">2020-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a>
+        </span>
+    </span>
+
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 9 篇日志。 继续努力。</span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
       </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>499字</span>
+    </span>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h2><h4 id="一、redis持久化一个是快照-RDB-另一个是AOF日志。"><a href="#一、redis持久化一个是快照-RDB-另一个是AOF日志。" class="headerlink" title="一、redis持久化一个是快照(RDB)另一个是AOF日志。"></a>一、redis持久化一个是快照(RDB)另一个是AOF日志。</h4><p>快照：内存数据的二进制序列化形式，在内存紧凑；AOF：是操作日志记录，根据日志记录将数据写入数据库中。</p>
+<h4 id="二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"><a href="#二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。" class="headerlink" title="二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"></a>二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。</h4><a id="more"></a>
+<h4 id="三、快照如何将数据写入数据库并且保持客户端与数据一致？"><a href="#三、快照如何将数据写入数据库并且保持客户端与数据一致？" class="headerlink" title="三、快照如何将数据写入数据库并且保持客户端与数据一致？"></a>三、快照如何将数据写入数据库并且保持客户端与数据一致？</h4><ol>
+<li>子进程进行数据持久化，父进程响应客户端请求响应；</li>
+<li>将数据复制出来进行修改，然后进行数据同步</li>
+<li>当子进程写入完所有数据后会用该临时文件替换旧的 RDB 文件，至此一次快照操作完成</li>
+<li>快照存在两个命令save和bgsave都是将数据保存到数据库。save是阻塞式保存，执行saveredis不能进行其他操作；bgsave是有主、子进程来进行，子进程进行创建RDB文件，主进程进行执行客户端指令。<h4 id="四、AOF如何将数据写入数据库并且保持客户端与数据一致？"><a href="#四、AOF如何将数据写入数据库并且保持客户端与数据一致？" class="headerlink" title="四、AOF如何将数据写入数据库并且保持客户端与数据一致？"></a>四、AOF如何将数据写入数据库并且保持客户端与数据一致？</h4></li>
+<li>存储redis指令，将指令保存到日志中</li>
+<li>当redis出现问题时，可以在日志中执行操作指令</li>
+<li>利用fsync保证执行命令数据不丢失<h4 id="五、redis持久化不足"><a href="#五、redis持久化不足" class="headerlink" title="五、redis持久化不足"></a>五、redis持久化不足</h4> 快照：</li>
+<li>Redis异常退出，就会丢失最后一次快照以后更改的所有数据</li>
+<li>使用于对于数据不是很重要</li>
+<li>大量数据会使得创建大量的子进程造成系统资源不足，处理时间过长<br> AOF：</li>
+<li>文件较大是恢复时较慢，需要从日志中加载操作过的指令。</li>
+<li>重写AOF是需要fsync来进行同步磁盘</li>
+<li>redis版本需要4.0 以上</li>
+</ol>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:58:52+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" itemprop="url">
-            <span itemprop="name">redis雪崩与穿透的解决方案</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis/" rel="tag"># redis</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"># 学习</a>
+          </div>
 
-      
-    </header>
+        
+
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                  <a href="/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="next" title="redis异步消息队列"> <i class="fa fa-chevron-left"></i>
+                     redis异步消息队列
+                  </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
   </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:56:09+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/" itemprop="url">
-            <span itemprop="name">理解Hyperloglog</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:47:34+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/" itemprop="url">
-            <span itemprop="name">python单例模型</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:41:29+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/python%E5%8D%8F%E7%A8%8B/" itemprop="url">
-            <span itemprop="name">python协程</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T11:17:52+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" itemprop="url">
-            <span itemprop="name">网络七层协议</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T11:09:05+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/http%E5%92%8Chttps%E7%9A%84%E5%8C%BA%E5%88%AB/" itemprop="url">
-            <span itemprop="name">http和https的区别</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T10:55:23+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" itemprop="url">
-            <span itemprop="name">redis布隆过滤器</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T10:22:43+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url">
-            <span itemprop="name">redis异步消息队列</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-25T22:44:46+08:00"
-              content="2020-09-25">
-          09-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/" itemprop="url">
-            <span itemprop="name">redis持久化</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-
-    </div>
-  </div>
   
   
-  
-
   
 
 

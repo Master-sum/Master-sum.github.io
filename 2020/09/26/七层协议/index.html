@@ -21,18 +21,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="Python">
-<meta property="og:type" content="website">
-<meta property="og:title" content="code change world">
-<meta property="og:url" content="http://example.com/archives/2020/09/index.html">
+  <meta name="description" content="一、七层协议： 物理层：主要定义物理设备标准，如网线的接口类型、光纤的接口类型、各种传输介质的传输速率等 数据链路层： 定义了如何格式化数据以进行传输,以及如何控制对物理介质的访问。这一层通常还提供错误检测和纠正,以确保数据的可靠传输（CRC），这一层的数据叫做帧（Frame）。 网络层： 在位于不同地理位置的网络中的两个主机系统之间提供连接和路径选择。Internet的发展使得从世界各站点访问信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络七层协议">
+<meta property="og:url" content="http://example.com/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="code change world">
-<meta property="og:description" content="Python">
+<meta property="og:description" content="一、七层协议： 物理层：主要定义物理设备标准，如网线的接口类型、光纤的接口类型、各种传输介质的传输速率等 数据链路层： 定义了如何格式化数据以进行传输,以及如何控制对物理介质的访问。这一层通常还提供错误检测和纠正,以确保数据的可靠传输（CRC），这一层的数据叫做帧（Frame）。 网络层： 在位于不同地理位置的网络中的两个主机系统之间提供连接和路径选择。Internet的发展使得从世界各站点访问信">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-26T03:17:52.384Z">
+<meta property="article:modified_time" content="2020-09-26T03:18:24.793Z">
 <meta property="article:author" content="Jack.bai">
+<meta property="article:tag" content="网络协议">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/archives/2020/09/">
+<link rel="canonical" href="http://example.com/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/">
 
 
 <script class="page-configurations">
@@ -40,12 +43,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | code change world</title>
+  <title>网络七层协议 | code change world</title>
   
 
 
@@ -183,7 +186,7 @@
   </div>
 
   <aside class="sidebar">
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -195,6 +198,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">一、七层协议：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%BA%94%E5%B1%82%E5%8D%8F%E8%AE%AE%E5%AF%B9%E5%BA%94%E7%9A%84%E5%8D%8F%E8%AE%AE%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">二、五层协议对应的协议：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E3%80%81UDP-%E5%92%8CTCP%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">三、UDP 和TCP的区别：</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -339,212 +343,135 @@
 </noscript>
 
 
-    <div class="main-inner archive posts-collapse">
+    <div class="main-inner post posts-expand">
       
 
       
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="Jack.bai">
+      <meta itemprop="description" content="Python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code change world">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网络七层协议
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-09-26 11:17:52 / 修改时间：11:18:24" itemprop="dateCreated datePublished" datetime="2020-09-26T11:17:52+08:00">2020-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+        </span>
+    </span>
+
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 9 篇日志。 继续努力。</span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
       </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>531字</span>
+    </span>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h4 id="一、七层协议："><a href="#一、七层协议：" class="headerlink" title="一、七层协议："></a>一、七层协议：</h4><ol>
+<li>物理层：主要定义物理设备标准，如网线的接口类型、光纤的接口类型、各种传输介质的传输速率等</li>
+<li>数据链路层： 定义了如何格式化数据以进行传输,以及如何控制对物理介质的访问。这一层通常还提供错误检测和纠正,以确保数据的可靠传输（CRC），这一层的数据叫做帧（Frame）。</li>
+<li>网络层： 在位于不同地理位置的网络中的两个主机系统之间提供连接和路径选择。Internet的发展使得从世界各站点访问信息的用户数大大增加,而网络层正是管理这种连接的层，这一层的数据叫做分组（数据包：Packet）。<a id="more"></a></li>
+<li>传输层： 定义了一些传输数据的协议和端口号(WWW端口80等) , 常常把这一层数据叫做段（Segment）。</li>
+<li>会话层： 通过传输层(端口号:传输端口与接收端口)建立数据传输的通路（session），提供访问验证和会话管理。常见：服务器的用户登陆，和断定续传（会话协议数据单元SPDU）。</li>
+<li>表示层： 对数据进行翻译、加密和压缩，可确保一个系统的应用层所发送的信息可以被另一个系统的应用层读取（表示协议数据单元PPDU）。表示层会通过使用一种通格式来实现多种数据格式之间的转换。</li>
+<li>应用层： 是最靠近用户的OSI层。这一层为用户的应用程序(例如电子邮件、文件传输和终端仿真)提供网络服务（应用协议数据单元APDU）。</li>
+</ol>
+<h4 id="二、五层协议对应的协议："><a href="#二、五层协议对应的协议：" class="headerlink" title="二、五层协议对应的协议："></a>二、五层协议对应的协议：</h4><ol>
+<li>物理层： RJ45、CLOCK、IEEE802.3，常用的以太网</li>
+<li>数据链路层： PPP、FR、HDLC、VLAN、MAC ，Mac地址</li>
+<li>网络层： IP、ICMP、ARP、RARP、OSPF、IPX、RIP、IGRP</li>
+<li>传输层: TCP、UDP、SPX</li>
+<li>应用层： FTP、DNS、Telnet、SMTP、HTTP、WWW、NFS</li>
+</ol>
+<h4 id="三、UDP-和TCP的区别："><a href="#三、UDP-和TCP的区别：" class="headerlink" title="三、UDP 和TCP的区别："></a>三、UDP 和TCP的区别：</h4><ol>
+<li>可靠性：</li>
+<li>安全性</li>
+<li>通信方式：</li>
+</ol>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:58:52+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" itemprop="url">
-            <span itemprop="name">redis雪崩与穿透的解决方案</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" rel="tag"># 网络协议</a>
+          </div>
 
-      
-    </header>
+        
+
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                  <a href="/2020/09/26/python%E5%8D%8F%E7%A8%8B/" rel="next" title="python协程"> <i class="fa fa-chevron-left"></i>
+                     python协程
+                  </a>
+            </div>
+            <div class="post-nav-item">
+                  <a href="/2020/09/26/http%E5%92%8Chttps%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="prev" title="http和https的区别">
+                     http和https的区别<i class="fa fa-chevron-right"></i>
+                  </a>
+            </div>
+          </div>
+    </footer>
   </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:56:09+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/" itemprop="url">
-            <span itemprop="name">理解Hyperloglog</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:47:34+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/" itemprop="url">
-            <span itemprop="name">python单例模型</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:41:29+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/python%E5%8D%8F%E7%A8%8B/" itemprop="url">
-            <span itemprop="name">python协程</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T11:17:52+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" itemprop="url">
-            <span itemprop="name">网络七层协议</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T11:09:05+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/http%E5%92%8Chttps%E7%9A%84%E5%8C%BA%E5%88%AB/" itemprop="url">
-            <span itemprop="name">http和https的区别</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T10:55:23+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" itemprop="url">
-            <span itemprop="name">redis布隆过滤器</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T10:22:43+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url">
-            <span itemprop="name">redis异步消息队列</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-25T22:44:46+08:00"
-              content="2020-09-25">
-          09-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/" itemprop="url">
-            <span itemprop="name">redis持久化</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-
-    </div>
-  </div>
   
   
-  
-
   
 
 

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>redis持久化</title>
+    <url>/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h2><h4 id="一、redis持久化一个是快照-RDB-另一个是AOF日志。"><a href="#一、redis持久化一个是快照-RDB-另一个是AOF日志。" class="headerlink" title="一、redis持久化一个是快照(RDB)另一个是AOF日志。"></a>一、redis持久化一个是快照(RDB)另一个是AOF日志。</h4><p>快照：内存数据的二进制序列化形式，在内存紧凑；AOF：是操作日志记录，根据日志记录将数据写入数据库中。</p>
+<h4 id="二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"><a href="#二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。" class="headerlink" title="二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"></a>二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。</h4><a id="more"></a>
+<h4 id="三、快照如何将数据写入数据库并且保持客户端与数据一致？"><a href="#三、快照如何将数据写入数据库并且保持客户端与数据一致？" class="headerlink" title="三、快照如何将数据写入数据库并且保持客户端与数据一致？"></a>三、快照如何将数据写入数据库并且保持客户端与数据一致？</h4><ol>
+<li>子进程进行数据持久化，父进程响应客户端请求响应；</li>
+<li>将数据复制出来进行修改，然后进行数据同步</li>
+<li>当子进程写入完所有数据后会用该临时文件替换旧的 RDB 文件，至此一次快照操作完成</li>
+<li>快照存在两个命令save和bgsave都是将数据保存到数据库。save是阻塞式保存，执行saveredis不能进行其他操作；bgsave是有主、子进程来进行，子进程进行创建RDB文件，主进程进行执行客户端指令。<h4 id="四、AOF如何将数据写入数据库并且保持客户端与数据一致？"><a href="#四、AOF如何将数据写入数据库并且保持客户端与数据一致？" class="headerlink" title="四、AOF如何将数据写入数据库并且保持客户端与数据一致？"></a>四、AOF如何将数据写入数据库并且保持客户端与数据一致？</h4></li>
+<li>存储redis指令，将指令保存到日志中</li>
+<li>当redis出现问题时，可以在日志中执行操作指令</li>
+<li>利用fsync保证执行命令数据不丢失<h4 id="五、redis持久化不足"><a href="#五、redis持久化不足" class="headerlink" title="五、redis持久化不足"></a>五、redis持久化不足</h4> 快照：</li>
+<li>Redis异常退出，就会丢失最后一次快照以后更改的所有数据</li>
+<li>使用于对于数据不是很重要</li>
+<li>大量数据会使得创建大量的子进程造成系统资源不足，处理时间过长<br> AOF：</li>
+<li>文件较大是恢复时较慢，需要从日志中加载操作过的指令。</li>
+<li>重写AOF是需要fsync来进行同步磁盘</li>
+<li>redis版本需要4.0 以上</li>
+</ol>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redis异步消息队列</title>
+    <url>/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</url>
+    <content><![CDATA[<h3 id="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"><a href="#一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；" class="headerlink" title="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"></a>一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；</h3><p>假设：list为空时，pop不出数据就会一直处于pop状态，从而进入死循环，导致资源的浪费，<br>解决方案：1是给线程一个睡眠的时间。2是使用blpop和brpop，b是blocking reading阻塞式读取,blpop弹出list中的第一个元素和返回时间，当不存在元素时返回为空;brpop会阻塞队列，而且每次只会弹出一个消息，如果没有消息则会阻塞。</p>
+<h3 id="二、为了资源占用降低，可以在list为空的时候断开连接"><a href="#二、为了资源占用降低，可以在list为空的时候断开连接" class="headerlink" title="二、为了资源占用降低，可以在list为空的时候断开连接"></a>二、为了资源占用降低，可以在list为空的时候断开连接</h3><h3 id="三、锁冲突处理："><a href="#三、锁冲突处理：" class="headerlink" title="三、锁冲突处理："></a>三、锁冲突处理：</h3><ol>
+<li>抛出异常之后稍等之后重新发起请求</li>
+<li>使用sleep使得线程，暂停休息一下</li>
+<li>将请求放入延时队列中去<a id="more"></a>
+
+</li>
+</ol>
+<h3 id="四、因为没有高级特性也没有ACK保证，不能达到100-可靠；"><a href="#四、因为没有高级特性也没有ACK保证，不能达到100-可靠；" class="headerlink" title="四、因为没有高级特性也没有ACK保证，不能达到100%可靠；"></a>四、因为没有高级特性也没有ACK保证，不能达到100%可靠；</h3><h3 id="五、redis位图储存"><a href="#五、redis位图储存" class="headerlink" title="五、redis位图储存"></a>五、redis位图储存</h3><ol>
+<li>主要是用来节约空间：原理是位图操作的是位，8位=1字节（B）1024B=1KB</li>
+<li>存储量大可以达到40亿</li>
+<li>防止溢出：溢出折返、溢出保持最大值、溢出不执行</li>
+</ol>
+<h3 id="六、存取方法："><a href="#六、存取方法：" class="headerlink" title="六、存取方法："></a>六、存取方法：</h3><ol>
+<li>零存零取：存setbit w 1 0  取getbit w 1都是以位进行操作</li>
+<li>整存零取：存 set name hello 取getbit name 1 </li>
+<li>零存整取：存setbit name 1 1 取 get name </li>
+</ol>
+<p>###七、操作命令：</p>
+<p>Setbit:以位单位进行存储数据<br>Getbit:以位单位进行取出数据<br>Bitcount:统计指定范围内1的数量<br>127.0.0.1:6379&gt; set n hello<br>OK<br>127.0.0.1:6379&gt; bitcount n #查找整个n中1的个数<br>(integer) 21<br>127.0.0.1:6379&gt; bitcount n 0 1#查找第一个字符到第二字符中1的个数<br>(integer) 7<br>Bitpos:用来查找指定范围内出现的第一个0或1<br>127.0.0.1:6379&gt; bitpos n 1#查找字符中第一个1出现的位置<br>(integer) 1<br>127.0.0.1:6379&gt; bitpos n 1 1 2#查找1在第二个字符到第三个字符之间的位置<br>(integer) 9<br>127.0.0.1:6379&gt; bitpos n 0 1 2 [start] [end]#查找9在第二个字符到第三个字符之间的位置<br>(integer) 8<br>Bitfield:存在三个字令get set incrby，可以指定位片段进行读写，但是最多只能处理64个连续的位，高低位存在相反，如下图：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>bin(ord(‘h’))<br>‘0b1101000’ #高位-低位<br>127.0.0.1:6379&gt; bitfield n get u4 0#从第一位开始取4个位，u代表是无符号的，结果等于2^0+2^1+2^1+2^0=1+2+2+1=6</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ol>
+<li>(integer) 6</li>
+<li>0.0.1:6379&gt; bitfield n get i3 2#从第三位开始取3个位，I代表是有符号，1是负数，0是正数，位数的第一位代表正负符号。结果等于-(2^0+2^1)</li>
+<li>(integer) -3<br>incrby是针对自增的</li>
+</ol>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redis布隆过滤器</title>
+    <url>/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
+    <content><![CDATA[<h4 id="一、什么是布隆过滤器"><a href="#一、什么是布隆过滤器" class="headerlink" title="一、什么是布隆过滤器"></a>一、什么是布隆过滤器</h4><ol>
+<li>布隆过滤器是一种高级数据结构，针对大数据的去重</li>
+<li>可以过滤看过的内容，确保不存在重复的，同时它也存在误判；但是这个误判是在可以接受的范围内</li>
+<li>在redis4.0之后发布主要是其去重的功能</li>
+<li>key经过hash函数之后获得一个hash值然后进行在位图上进行0、1标记</li>
+<li>占用空间计算：k =0.7*(1/n),f=0.6185^(1/n)，n代表元素的数量，f表示错误率；k表示hash函数的最佳数量</li>
+</ol>
+<a id="more"></a>
+
+<h4 id="二、为什么使用布隆过滤器"><a href="#二、为什么使用布隆过滤器" class="headerlink" title="二、为什么使用布隆过滤器"></a>二、为什么使用布隆过滤器</h4><ol>
+<li>针对大量数据的去重过滤，布隆过滤有效的进行并且可以节约大量的空间</li>
+<li>对于一些大量且冗余的数据可以保证去重的时候不重复</li>
+<li>防止数据库崩溃，节约查询的成本</li>
+</ol>
+<h4 id="三、怎么使用布隆过滤器"><a href="#三、怎么使用布隆过滤器" class="headerlink" title="三、怎么使用布隆过滤器"></a>三、怎么使用布隆过滤器</h4><ol>
+<li>存在两个指令：bf.add、bf.exists，添加元素和判断元素是否存在。</li>
+<li>注意redis4.0以下是不能直接使用布隆过滤。</li>
+<li>组合指令:bf.madd、bf.mexists可以一次进行多次操作</li>
+</ol>
+<h4 id="四、布隆过滤器的优缺点"><a href="#四、布隆过滤器的优缺点" class="headerlink" title="四、布隆过滤器的优缺点"></a>四、布隆过滤器的优缺点</h4><ol>
+<li>优点可以节省空间免去重复查询和过滤</li>
+<li>可以对请求进行拦截、过滤避免非法请求和频繁请求导致缓存被击穿</li>
+<li>缺点存在误判不能用于精确的过滤</li>
+</ol>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>http和https的区别</title>
+    <url>/2020/09/26/http%E5%92%8Chttps%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h4 id="一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间"><a href="#一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间" class="headerlink" title="一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间"></a>一、http是一种超文本协议用于网页上的通信协议，主要是客户端和服务端之间</h4><ol>
+<li>原理：基于TCP/IP通信协议来传递数据的协议，传输的数据类型为HTML 文件,、图片文件, 查询结果等。</li>
+<li>结构：包括请求结构(请求行、请求头、请求正文)和响应结构(响应行、响应头、响应正文)</li>
+</ol>
+<h4 id="二、http的特点："><a href="#二、http的特点：" class="headerlink" title="二、http的特点："></a>二、http的特点：</h4><ol>
+<li>http协议支持客户端/服务端模式，也是一种请求/响应模式的协议。</li>
+<li>客户向服务器请求服务时，只需传送请求方法和路径。请求方法常用的有GET、HEAD、POST。</li>
+<li>HTTP允许传输任意类型的数据对象。传输的类型由Content-Type加以标记</li>
+<li>限制每次连接只处理一个请求。服务器处理完请求，并收到客户的应答后，即断开连接，但是却不利于客户端与服务器保持会话连接，为了弥补这种不足，产生了两项记录http状态的技术，一个叫做Cookie,一个叫做Session。</li>
+<li>无状态是指协议对于事务处理没有记忆，后续处理需要前面的信息，则必须重传。<a id="more"></a>
+<h4 id="三、http的请求方式"><a href="#三、http的请求方式" class="headerlink" title="三、http的请求方式"></a>三、http的请求方式</h4></li>
+<li>GET请求指定的页面信息，并返回实体主体。一般用于不涉及安全表单的提交</li>
+<li>POST请求向指定资源提交数据进行处理请求（例如提交表单或者上传文件）。数据被包含在请求体中。POST请求可能会导致新的资源的建立和/或已有资源的修改。</li>
+<li>HEAD:类似于get请求，只不过返回的响应中没有具体的内容，用于获取报头</li>
+<li>PUT:从客户端向服务器传送的数据取代指定的文档的内容。</li>
+<li>DELETE:请求服务器删除指定的页面</li>
+</ol>
+<h4 id="四、请求响应码"><a href="#四、请求响应码" class="headerlink" title="四、请求响应码"></a>四、请求响应码</h4><ol>
+<li>1XX- 信息型，服务器收到请求，需要请求者继续操作</li>
+<li>2XX- 成功型，请求成功收到，理解并处理</li>
+<li>3XX - 重定向，需要进一步的操作以完成请求</li>
+<li>4XX - 客户端错误，请求包含语法错误或无法完成请求</li>
+<li>5XX - 服务器错误，服务器在处理请求的过程中发生了错误</li>
+</ol>
+<h4 id="五、http存在的风险"><a href="#五、http存在的风险" class="headerlink" title="五、http存在的风险"></a>五、http存在的风险</h4><ol>
+<li>请求信息明文传输，容易被窃听截取。</li>
+<li>数据的完整性未校验，容易被篡改</li>
+<li>没有验证对方身份，存在冒充危险</li>
+</ol>
+<h4 id="六、https使用加密的方式进行通信，可以解决http存在的弊端"><a href="#六、https使用加密的方式进行通信，可以解决http存在的弊端" class="headerlink" title="六、https使用加密的方式进行通信，可以解决http存在的弊端"></a>六、https使用加密的方式进行通信，可以解决http存在的弊端</h4><ol>
+<li>对称密钥加密</li>
+<li>非对称密钥加密</li>
+<li>证书加密</li>
+</ol>
+<h4 id="七、https的弊端"><a href="#七、https的弊端" class="headerlink" title="七、https的弊端"></a>七、https的弊端</h4><ol>
+<li>HTTPS协议多次握手，导致页面的加载时间延长近50%</li>
+<li>HTTPS连接缓存不如HTTP高效，会增加数据开销和功耗</li>
+<li>申请SSL证书需要钱，功能越强大的证书费用越高</li>
+<li>SSL涉及到的安全算法会消耗 CPU 资源，对服务器资源消耗较大</li>
+</ol>
+<h4 id="八、http和https的主要区别"><a href="#八、http和https的主要区别" class="headerlink" title="八、http和https的主要区别"></a>八、http和https的主要区别</h4><ol>
+<li>安全性：https较http而言https是传输安全的</li>
+<li>端口不一致：http是80，https是443</li>
+<li>成本：https较http成本比较高</li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>http</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络七层协议</title>
+    <url>/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/</url>
+    <content><![CDATA[<h4 id="一、七层协议："><a href="#一、七层协议：" class="headerlink" title="一、七层协议："></a>一、七层协议：</h4><ol>
+<li>物理层：主要定义物理设备标准，如网线的接口类型、光纤的接口类型、各种传输介质的传输速率等</li>
+<li>数据链路层： 定义了如何格式化数据以进行传输,以及如何控制对物理介质的访问。这一层通常还提供错误检测和纠正,以确保数据的可靠传输（CRC），这一层的数据叫做帧（Frame）。</li>
+<li>网络层： 在位于不同地理位置的网络中的两个主机系统之间提供连接和路径选择。Internet的发展使得从世界各站点访问信息的用户数大大增加,而网络层正是管理这种连接的层，这一层的数据叫做分组（数据包：Packet）。<a id="more"></a></li>
+<li>传输层： 定义了一些传输数据的协议和端口号(WWW端口80等) , 常常把这一层数据叫做段（Segment）。</li>
+<li>会话层： 通过传输层(端口号:传输端口与接收端口)建立数据传输的通路（session），提供访问验证和会话管理。常见：服务器的用户登陆，和断定续传（会话协议数据单元SPDU）。</li>
+<li>表示层： 对数据进行翻译、加密和压缩，可确保一个系统的应用层所发送的信息可以被另一个系统的应用层读取（表示协议数据单元PPDU）。表示层会通过使用一种通格式来实现多种数据格式之间的转换。</li>
+<li>应用层： 是最靠近用户的OSI层。这一层为用户的应用程序(例如电子邮件、文件传输和终端仿真)提供网络服务（应用协议数据单元APDU）。</li>
+</ol>
+<h4 id="二、五层协议对应的协议："><a href="#二、五层协议对应的协议：" class="headerlink" title="二、五层协议对应的协议："></a>二、五层协议对应的协议：</h4><ol>
+<li>物理层： RJ45、CLOCK、IEEE802.3，常用的以太网</li>
+<li>数据链路层： PPP、FR、HDLC、VLAN、MAC ，Mac地址</li>
+<li>网络层： IP、ICMP、ARP、RARP、OSPF、IPX、RIP、IGRP</li>
+<li>传输层: TCP、UDP、SPX</li>
+<li>应用层： FTP、DNS、Telnet、SMTP、HTTP、WWW、NFS</li>
+</ol>
+<h4 id="三、UDP-和TCP的区别："><a href="#三、UDP-和TCP的区别：" class="headerlink" title="三、UDP 和TCP的区别："></a>三、UDP 和TCP的区别：</h4><ol>
+<li>可靠性：</li>
+<li>安全性</li>
+<li>通信方式：</li>
+</ol>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>网络协议</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python协程</title>
+    <url>/2020/09/26/python%E5%8D%8F%E7%A8%8B/</url>
+    <content><![CDATA[<h4 id="一、什么是协程"><a href="#一、什么是协程" class="headerlink" title="一、什么是协程"></a>一、什么是协程</h4><ol>
+<li>指一个过程，这个过程与调用方协作，产出由调用方提供的值</li>
+<li>与生成器yield类似，就是需要两个方面来进行操作。比如说：yield需要next调用进行生成函数值，而y协程需要其他函数来进行调用</li>
+</ol>
+<h4 id="二、协程、进程和线程的区别"><a href="#二、协程、进程和线程的区别" class="headerlink" title="二、协程、进程和线程的区别"></a>二、协程、进程和线程的区别</h4><p>   对操作系统来说，线程是最小的执行单元，进程是最小的资源管理单元</p>
+<a id="more"></a>   
+<ol>
+<li>进程：有自己的内存空间，独立的内存地址，操作系统以进程为单位分配系统资源。</li>
+<li>线程：轻量级的进程，是CPU最小的调度单位</li>
+<li>协程：比线程更加轻量级，它不是操作系统控制的而是由程序控制的；协程在子程序中是可以中断的，一个线程可以拥有多个协程</li>
+</ol>
+<h4 id="三、yield和yield-from的区别"><a href="#三、yield和yield-from的区别" class="headerlink" title="三、yield和yield from的区别"></a>三、yield和yield from的区别</h4><pre><code>&quot;&quot;&quot;</code></pre>
+<p>yield from打开双向通道，把最外层的调用方与最内层的子生成器连接起来，这样二者可以直接发送和产出值，还可以直接<br>传入异常，而不用在位于中间的协程中添加大量处理异常的样板代码。有了这个结构，协程可以通过以前不可能的方式委托职责。<br>1、yield和yield from的区别在于后者可以省去一些循环操作<br>“””</p>
+<p>def num():<br>  print(“我是yield”)<br>  for i in range(10):<br>      yield i<br>def num1():<br>    print(“我是yield from”)<br>    yield from range(10)<br>a = list(num())<br>print(a)<br>b = list(num1())<br>print(b)</p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python单例模型</title>
+    <url>/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<h4 id="一、单例模型：确保某一个类只有一个实例存在"><a href="#一、单例模型：确保某一个类只有一个实例存在" class="headerlink" title="一、单例模型：确保某一个类只有一个实例存在"></a>一、单例模型：确保某一个类只有一个实例存在</h4><p>特点：<br>1、某个类只能有一个实例<br>2、它必须自行创建这个实例<br>3、它必须自行向整个系统提供这个实例<br>实现方法：<br>1、使用模块<br>class Singleton1(object):<br>    def foo(self):<br>        print(“这是一个单例模式”)<br>singleton = Singleton1()<br>将其保存在Singleton.py中可以将其导入到其他模块并且如from Singleton1 import singleton</p>
+<a id="more"></a>  
+<p>2、使用装饰器<br>#创建一个装饰器<br>def Singleton(cls):<br>    #定义一个字典<br>    instance = {}<br>    @wraps(cls)<br>    def getinstance(<em>args,**kwargs):<br>        #判断这个类是否存在于字典中<br>        if cls not in instance:<br>            instance[cls] = cls(<em>args,</em></em>kwargs)<br>        print(instance)<br>        return instance[cls]<br>    return getinstance<br>#这里调用装饰器<br>@Singleton<br>class Myc(object):<br>    b = 1<br>m = Myc()</p>
+<p>3、使用元类(metaclass)：元类可以控制类的创建过程，主要做三件事情拦截类的创建、修改类的定义、返回修改后的类<br>#使用元类的版本<br>class Singleton(type):<br>    #定义一个私有变量<br>    _instance = {}</p>
+<pre><code>def __call__(cls, *args, **kwargs):
+    if cls not in cls._instance:
+        cls._instance[cls] = super(Singleton,cls).__call__(*args,**kwargs)
+        return cls._instance[cls]</code></pre>
+<p>class My(metaclass=Singleton):<br>    print(“11”)<br>t = My()<br>print(t)</p>
+<p>4、使用<strong>new</strong><br>#__new__创建单例模型<br>class Singleton(object):<br>    #定义一个私有变量<br>    _instance = None<br>    #<strong>new__创建一个对象,__init__函数初始化<br>    def __new</strong>(cls, *args, **kwargs):</p>
+<pre><code>    if cls._instance is None:
+        cls._instance = super().__new__(cls)
+    return cls._instance</code></pre>
+<p>a = Singleton()<br>b = Singleton()<br>print(a == b)#值相同<br>print(a is b)#引用地址相同</p>
+<h4 id="二、is与-的区别"><a href="#二、is与-的区别" class="headerlink" title="二、is与==的区别"></a>二、is与==的区别</h4><p>1、is比较的是地址，==比较是值</p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>理解Hyperloglog</title>
+    <url>/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/</url>
+    <content><![CDATA[<h4 id="一、什么是Hyperloglog"><a href="#一、什么是Hyperloglog" class="headerlink" title="一、什么是Hyperloglog"></a>一、什么是Hyperloglog</h4><ol>
+<li>Hyperloglog是一种数据结构，用来粗糙的大量数据去重统计，标准误差在0.81%。</li>
+<li>Hyperloglog指令pfadd和pfcount分别是增加计数和获取统计数<br> 127.0.0.1:6379&gt; pfadd codehole user u<br> (integer) 1<br> 127.0.0.1:6379&gt; pfcount codehole<br> (integer) 2<br> 127.0.0.1:6379&gt;<br> 3.pfmerge对两个相似的数据进行合并<a id="more"></a>
+
+</li>
+</ol>
+<h4 id="二、Hyperloglog作用"><a href="#二、Hyperloglog作用" class="headerlink" title="二、Hyperloglog作用"></a>二、Hyperloglog作用</h4><ol>
+<li>用于粗糙的统计</li>
+<li>三、Hyperloglog优缺点</li>
+<li>一个需要12KB的内存空间，不适合大量人员数据；Hyperloglog开始由稀疏矩阵存储随着统计数量的增加才会转为稠密矩阵而达到12KB。</li>
+<li>Hyperloglog存在16384个桶位，一个桶位占6个bit，固（16384*6）/8=12KB</li>
+</ol>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis进阶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redis雪崩与穿透的解决方案</title>
+    <url>/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h4 id="一、雪崩与穿透的区别："><a href="#一、雪崩与穿透的区别：" class="headerlink" title="一、雪崩与穿透的区别："></a>一、雪崩与穿透的区别：</h4><pre><code>这两个都是指的是缓存层出现问题导致的问题。一般客户端进行访问——》缓存拿到数据，缓存拿不到数据在访问数据库，避免直接操作数据库增加不必要的危险性；redis的能力读的速度是110000次/s,写的速度是81000次/s ，可以顶得住海量的读写数据。</code></pre>
+<ol>
+<li>雪崩：是指缓存层由于一些原因，使得大量的客户端数据直接到了数据库，造成数据库调用量就会暴增，造成存储层也会挂掉的情况；失去缓存的保护，海量的数据操作直接作用于数据库，就像雪崩一样直接作用到数据库。</li>
+<li>穿透：顾名思义就是数据击穿了缓存，将数据直接打在数据库。</li>
+<li>将请求放入延时队列中去<a id="more"></a>
+
+</li>
+</ol>
+<h4 id="二、造成雪崩与穿透的原因："><a href="#二、造成雪崩与穿透的原因：" class="headerlink" title="二、造成雪崩与穿透的原因："></a>二、造成雪崩与穿透的原因：</h4><p>雪崩的原因：</p>
+<ol>
+<li>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，大量数据会去直接访问DB，此时给DB很大的压力。</li>
+<li>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，大量数据会去直接访问DB，此时给DB很大的压力。<br>穿透的原因：</li>
+<li>自身程序出现不合理的代码逻辑造成</li>
+</ol>
+<p>三、怎么解决雪崩与穿透的问题</p>
+<p>四、我们常见的雪崩与穿透</p>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis进阶</tag>
+      </tags>
+  </entry>
+</search>

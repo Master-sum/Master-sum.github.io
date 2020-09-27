@@ -21,18 +21,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="Python">
-<meta property="og:type" content="website">
-<meta property="og:title" content="code change world">
-<meta property="og:url" content="http://example.com/archives/2020/09/index.html">
+  <meta name="description" content="一、单例模型：确保某一个类只有一个实例存在特点：1、某个类只能有一个实例2、它必须自行创建这个实例3、它必须自行向整个系统提供这个实例实现方法：1、使用模块class Singleton1(object):    def foo(self):        print(“这是一个单例模式”)singleton &#x3D; Singleton1()将其保存在Singleton.py中可以将其导入到其他模块并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python单例模型">
+<meta property="og:url" content="http://example.com/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/index.html">
 <meta property="og:site_name" content="code change world">
-<meta property="og:description" content="Python">
+<meta property="og:description" content="一、单例模型：确保某一个类只有一个实例存在特点：1、某个类只能有一个实例2、它必须自行创建这个实例3、它必须自行向整个系统提供这个实例实现方法：1、使用模块class Singleton1(object):    def foo(self):        print(“这是一个单例模式”)singleton &#x3D; Singleton1()将其保存在Singleton.py中可以将其导入到其他模块并">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-26T09:47:34.461Z">
+<meta property="article:modified_time" content="2020-09-26T09:47:51.485Z">
 <meta property="article:author" content="Jack.bai">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="面试">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/archives/2020/09/">
+<link rel="canonical" href="http://example.com/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/">
 
 
 <script class="page-configurations">
@@ -40,12 +44,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | code change world</title>
+  <title>python单例模型 | code change world</title>
   
 
 
@@ -183,7 +187,7 @@
   </div>
 
   <aside class="sidebar">
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -195,6 +199,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B%EF%BC%9A%E7%A1%AE%E4%BF%9D%E6%9F%90%E4%B8%80%E4%B8%AA%E7%B1%BB%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E5%AE%9E%E4%BE%8B%E5%AD%98%E5%9C%A8"><span class="nav-number">1.</span> <span class="nav-text">一、单例模型：确保某一个类只有一个实例存在</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81is%E4%B8%8E-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">二、is与&#x3D;&#x3D;的区别</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -339,212 +344,130 @@
 </noscript>
 
 
-    <div class="main-inner archive posts-collapse">
+    <div class="main-inner post posts-expand">
       
 
       
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="Jack.bai">
+      <meta itemprop="description" content="Python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code change world">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python单例模型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-09-26 17:47:34 / 修改时间：17:47:51" itemprop="dateCreated datePublished" datetime="2020-09-26T17:47:34+08:00">2020-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+        </span>
+    </span>
+
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 9 篇日志。 继续努力。</span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
       </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>376字</span>
+    </span>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h4 id="一、单例模型：确保某一个类只有一个实例存在"><a href="#一、单例模型：确保某一个类只有一个实例存在" class="headerlink" title="一、单例模型：确保某一个类只有一个实例存在"></a>一、单例模型：确保某一个类只有一个实例存在</h4><p>特点：<br>1、某个类只能有一个实例<br>2、它必须自行创建这个实例<br>3、它必须自行向整个系统提供这个实例<br>实现方法：<br>1、使用模块<br>class Singleton1(object):<br>    def foo(self):<br>        print(“这是一个单例模式”)<br>singleton = Singleton1()<br>将其保存在Singleton.py中可以将其导入到其他模块并且如from Singleton1 import singleton</p>
+<a id="more"></a>  
+<p>2、使用装饰器<br>#创建一个装饰器<br>def Singleton(cls):<br>    #定义一个字典<br>    instance = {}<br>    @wraps(cls)<br>    def getinstance(<em>args,**kwargs):<br>        #判断这个类是否存在于字典中<br>        if cls not in instance:<br>            instance[cls] = cls(<em>args,</em></em>kwargs)<br>        print(instance)<br>        return instance[cls]<br>    return getinstance<br>#这里调用装饰器<br>@Singleton<br>class Myc(object):<br>    b = 1<br>m = Myc()</p>
+<p>3、使用元类(metaclass)：元类可以控制类的创建过程，主要做三件事情拦截类的创建、修改类的定义、返回修改后的类<br>#使用元类的版本<br>class Singleton(type):<br>    #定义一个私有变量<br>    _instance = {}</p>
+<pre><code>def __call__(cls, *args, **kwargs):
+    if cls not in cls._instance:
+        cls._instance[cls] = super(Singleton,cls).__call__(*args,**kwargs)
+        return cls._instance[cls]</code></pre>
+<p>class My(metaclass=Singleton):<br>    print(“11”)<br>t = My()<br>print(t)</p>
+<p>4、使用<strong>new</strong><br>#__new__创建单例模型<br>class Singleton(object):<br>    #定义一个私有变量<br>    _instance = None<br>    #<strong>new__创建一个对象,__init__函数初始化<br>    def __new</strong>(cls, *args, **kwargs):</p>
+<pre><code>    if cls._instance is None:
+        cls._instance = super().__new__(cls)
+    return cls._instance</code></pre>
+<p>a = Singleton()<br>b = Singleton()<br>print(a == b)#值相同<br>print(a is b)#引用地址相同</p>
+<h4 id="二、is与-的区别"><a href="#二、is与-的区别" class="headerlink" title="二、is与==的区别"></a>二、is与==的区别</h4><p>1、is比较的是地址，==比较是值</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:58:52+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" itemprop="url">
-            <span itemprop="name">redis雪崩与穿透的解决方案</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+          </div>
 
-      
-    </header>
+        
+
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                  <a href="/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/" rel="next" title="理解Hyperloglog"> <i class="fa fa-chevron-left"></i>
+                     理解Hyperloglog
+                  </a>
+            </div>
+            <div class="post-nav-item">
+                  <a href="/2020/09/26/python%E5%8D%8F%E7%A8%8B/" rel="prev" title="python协程">
+                     python协程<i class="fa fa-chevron-right"></i>
+                  </a>
+            </div>
+          </div>
+    </footer>
   </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:56:09+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/" itemprop="url">
-            <span itemprop="name">理解Hyperloglog</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:47:34+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/" itemprop="url">
-            <span itemprop="name">python单例模型</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:41:29+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/python%E5%8D%8F%E7%A8%8B/" itemprop="url">
-            <span itemprop="name">python协程</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T11:17:52+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" itemprop="url">
-            <span itemprop="name">网络七层协议</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T11:09:05+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/http%E5%92%8Chttps%E7%9A%84%E5%8C%BA%E5%88%AB/" itemprop="url">
-            <span itemprop="name">http和https的区别</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T10:55:23+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" itemprop="url">
-            <span itemprop="name">redis布隆过滤器</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T10:22:43+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url">
-            <span itemprop="name">redis异步消息队列</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-25T22:44:46+08:00"
-              content="2020-09-25">
-          09-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/" itemprop="url">
-            <span itemprop="name">redis持久化</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-
-    </div>
-  </div>
   
   
-  
-
   
 
 

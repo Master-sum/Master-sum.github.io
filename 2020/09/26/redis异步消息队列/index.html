@@ -21,18 +21,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="Python">
-<meta property="og:type" content="website">
-<meta property="og:title" content="code change world">
-<meta property="og:url" content="http://example.com/archives/2020/09/index.html">
+  <meta name="description" content="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；假设：list为空时，pop不出数据就会一直处于pop状态，从而进入死循环，导致资源的浪费，解决方案：1是给线程一个睡眠的时间。2是使用blpop和brpop，b是blocking reading阻塞式读取,blpop弹出list中的第一个元素和返回时间，当不存在元素时返回为空;brpop会阻塞队列，而">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis异步消息队列">
+<meta property="og:url" content="http://example.com/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/index.html">
 <meta property="og:site_name" content="code change world">
-<meta property="og:description" content="Python">
+<meta property="og:description" content="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；假设：list为空时，pop不出数据就会一直处于pop状态，从而进入死循环，导致资源的浪费，解决方案：1是给线程一个睡眠的时间。2是使用blpop和brpop，b是blocking reading阻塞式读取,blpop弹出list中的第一个元素和返回时间，当不存在元素时返回为空;brpop会阻塞队列，而">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-26T02:22:43.446Z">
+<meta property="article:modified_time" content="2020-09-26T02:25:06.828Z">
 <meta property="article:author" content="Jack.bai">
+<meta property="article:tag" content="redis">
+<meta property="article:tag" content="学习">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/archives/2020/09/">
+<link rel="canonical" href="http://example.com/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">
 
 
 <script class="page-configurations">
@@ -40,12 +44,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | code change world</title>
+  <title>redis异步消息队列 | code change world</title>
   
 
 
@@ -183,7 +187,7 @@
   </div>
 
   <aside class="sidebar">
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -195,6 +199,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BD%BF%E7%94%A8redis%E7%9A%84list%E8%BF%9B%E8%A1%8Cpush%E5%92%8Cpop%E6%9D%A5%E5%AF%B9%E6%B6%88%E6%81%AF%E8%BF%9B%E8%A1%8C%E5%A4%84%E7%90%86%EF%BC%8C%E6%9C%9F%E9%97%B4%E5%8F%AF%E4%BB%A5%E6%98%AF%E5%A4%9A%E4%B8%AA%E7%94%9F%E4%BA%A7%E8%80%85%E5%92%8C%E6%B6%88%E8%B4%B9%E8%80%85%EF%BC%9B"><span class="nav-number">1.</span> <span class="nav-text">一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%B8%BA%E4%BA%86%E8%B5%84%E6%BA%90%E5%8D%A0%E7%94%A8%E9%99%8D%E4%BD%8E%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%9C%A8list%E4%B8%BA%E7%A9%BA%E7%9A%84%E6%97%B6%E5%80%99%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.</span> <span class="nav-text">二、为了资源占用降低，可以在list为空的时候断开连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%94%81%E5%86%B2%E7%AA%81%E5%A4%84%E7%90%86%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">三、锁冲突处理：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%9B%A0%E4%B8%BA%E6%B2%A1%E6%9C%89%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7%E4%B9%9F%E6%B2%A1%E6%9C%89ACK%E4%BF%9D%E8%AF%81%EF%BC%8C%E4%B8%8D%E8%83%BD%E8%BE%BE%E5%88%B0100-%E5%8F%AF%E9%9D%A0%EF%BC%9B"><span class="nav-number">4.</span> <span class="nav-text">四、因为没有高级特性也没有ACK保证，不能达到100%可靠；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81redis%E4%BD%8D%E5%9B%BE%E5%82%A8%E5%AD%98"><span class="nav-number">5.</span> <span class="nav-text">五、redis位图储存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%AD%98%E5%8F%96%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">六、存取方法：</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -339,212 +344,147 @@
 </noscript>
 
 
-    <div class="main-inner archive posts-collapse">
+    <div class="main-inner post posts-expand">
       
 
       
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="Jack.bai">
+      <meta itemprop="description" content="Python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code change world">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          redis异步消息队列
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-09-26 10:22:43 / 修改时间：10:25:06" itemprop="dateCreated datePublished" datetime="2020-09-26T10:22:43+08:00">2020-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a>
+        </span>
+    </span>
+
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 9 篇日志。 继续努力。</span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
       </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>726字</span>
+    </span>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"><a href="#一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；" class="headerlink" title="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"></a>一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；</h3><p>假设：list为空时，pop不出数据就会一直处于pop状态，从而进入死循环，导致资源的浪费，<br>解决方案：1是给线程一个睡眠的时间。2是使用blpop和brpop，b是blocking reading阻塞式读取,blpop弹出list中的第一个元素和返回时间，当不存在元素时返回为空;brpop会阻塞队列，而且每次只会弹出一个消息，如果没有消息则会阻塞。</p>
+<h3 id="二、为了资源占用降低，可以在list为空的时候断开连接"><a href="#二、为了资源占用降低，可以在list为空的时候断开连接" class="headerlink" title="二、为了资源占用降低，可以在list为空的时候断开连接"></a>二、为了资源占用降低，可以在list为空的时候断开连接</h3><h3 id="三、锁冲突处理："><a href="#三、锁冲突处理：" class="headerlink" title="三、锁冲突处理："></a>三、锁冲突处理：</h3><ol>
+<li>抛出异常之后稍等之后重新发起请求</li>
+<li>使用sleep使得线程，暂停休息一下</li>
+<li>将请求放入延时队列中去<a id="more"></a>
+
+</li>
+</ol>
+<h3 id="四、因为没有高级特性也没有ACK保证，不能达到100-可靠；"><a href="#四、因为没有高级特性也没有ACK保证，不能达到100-可靠；" class="headerlink" title="四、因为没有高级特性也没有ACK保证，不能达到100%可靠；"></a>四、因为没有高级特性也没有ACK保证，不能达到100%可靠；</h3><h3 id="五、redis位图储存"><a href="#五、redis位图储存" class="headerlink" title="五、redis位图储存"></a>五、redis位图储存</h3><ol>
+<li>主要是用来节约空间：原理是位图操作的是位，8位=1字节（B）1024B=1KB</li>
+<li>存储量大可以达到40亿</li>
+<li>防止溢出：溢出折返、溢出保持最大值、溢出不执行</li>
+</ol>
+<h3 id="六、存取方法："><a href="#六、存取方法：" class="headerlink" title="六、存取方法："></a>六、存取方法：</h3><ol>
+<li>零存零取：存setbit w 1 0  取getbit w 1都是以位进行操作</li>
+<li>整存零取：存 set name hello 取getbit name 1 </li>
+<li>零存整取：存setbit name 1 1 取 get name </li>
+</ol>
+<p>###七、操作命令：</p>
+<p>Setbit:以位单位进行存储数据<br>Getbit:以位单位进行取出数据<br>Bitcount:统计指定范围内1的数量<br>127.0.0.1:6379&gt; set n hello<br>OK<br>127.0.0.1:6379&gt; bitcount n #查找整个n中1的个数<br>(integer) 21<br>127.0.0.1:6379&gt; bitcount n 0 1#查找第一个字符到第二字符中1的个数<br>(integer) 7<br>Bitpos:用来查找指定范围内出现的第一个0或1<br>127.0.0.1:6379&gt; bitpos n 1#查找字符中第一个1出现的位置<br>(integer) 1<br>127.0.0.1:6379&gt; bitpos n 1 1 2#查找1在第二个字符到第三个字符之间的位置<br>(integer) 9<br>127.0.0.1:6379&gt; bitpos n 0 1 2 [start] [end]#查找9在第二个字符到第三个字符之间的位置<br>(integer) 8<br>Bitfield:存在三个字令get set incrby，可以指定位片段进行读写，但是最多只能处理64个连续的位，高低位存在相反，如下图：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>bin(ord(‘h’))<br>‘0b1101000’ #高位-低位<br>127.0.0.1:6379&gt; bitfield n get u4 0#从第一位开始取4个位，u代表是无符号的，结果等于2^0+2^1+2^1+2^0=1+2+2+1=6</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ol>
+<li>(integer) 6</li>
+<li>0.0.1:6379&gt; bitfield n get i3 2#从第三位开始取3个位，I代表是有符号，1是负数，0是正数，位数的第一位代表正负符号。结果等于-(2^0+2^1)</li>
+<li>(integer) -3<br>incrby是针对自增的</li>
+</ol>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:58:52+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" itemprop="url">
-            <span itemprop="name">redis雪崩与穿透的解决方案</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis/" rel="tag"># redis</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"># 学习</a>
+          </div>
 
-      
-    </header>
+        
+
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                  <a href="/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" rel="next" title="redis布隆过滤器"> <i class="fa fa-chevron-left"></i>
+                     redis布隆过滤器
+                  </a>
+            </div>
+            <div class="post-nav-item">
+                  <a href="/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/" rel="prev" title="redis持久化">
+                     redis持久化<i class="fa fa-chevron-right"></i>
+                  </a>
+            </div>
+          </div>
+    </footer>
   </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:56:09+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/" itemprop="url">
-            <span itemprop="name">理解Hyperloglog</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:47:34+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/" itemprop="url">
-            <span itemprop="name">python单例模型</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:41:29+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/python%E5%8D%8F%E7%A8%8B/" itemprop="url">
-            <span itemprop="name">python协程</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T11:17:52+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" itemprop="url">
-            <span itemprop="name">网络七层协议</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T11:09:05+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/http%E5%92%8Chttps%E7%9A%84%E5%8C%BA%E5%88%AB/" itemprop="url">
-            <span itemprop="name">http和https的区别</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T10:55:23+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" itemprop="url">
-            <span itemprop="name">redis布隆过滤器</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T10:22:43+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url">
-            <span itemprop="name">redis异步消息队列</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-25T22:44:46+08:00"
-              content="2020-09-25">
-          09-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/" itemprop="url">
-            <span itemprop="name">redis持久化</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
