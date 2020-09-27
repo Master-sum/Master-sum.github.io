@@ -24,7 +24,7 @@
   <meta name="description" content="一、雪崩与穿透的区别：这两个都是指的是缓存层出现问题导致的问题。一般客户端进行访问——》缓存拿到数据，缓存拿不到数据在访问数据库，避免直接操作数据库增加不必要的危险性；redis的能力读的速度是110000次&#x2F;s,写的速度是81000次&#x2F;s ，可以顶得住海量的读写数据。  雪崩：是指缓存层由于一些原因，使得大量的客户端数据直接到了数据库，造成数据库调用量就会暴增，造成存储层也会挂掉的情况；失去缓存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis雪崩与穿透的解决方案">
-<meta property="og:url" content="https://master-sum.github.io/SSS/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:url" content="https://master-sum.github.io/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/index.html">
 <meta property="og:site_name" content="code change world">
 <meta property="og:description" content="一、雪崩与穿透的区别：这两个都是指的是缓存层出现问题导致的问题。一般客户端进行访问——》缓存拿到数据，缓存拿不到数据在访问数据库，避免直接操作数据库增加不必要的危险性；redis的能力读的速度是110000次&#x2F;s,写的速度是81000次&#x2F;s ，可以顶得住海量的读写数据。  雪崩：是指缓存层由于一些原因，使得大量的客户端数据直接到了数据库，造成数据库调用量就会暴增，造成存储层也会挂掉的情况；失去缓存">
 <meta property="og:locale" content="zh_CN">
@@ -35,7 +35,7 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://master-sum.github.io/SSS/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+<link rel="canonical" href="https://master-sum.github.io/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
 
 
 <script class="page-configurations">
@@ -352,7 +352,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://master-sum.github.io/SSS/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+    <link itemprop="mainEntityOfPage" href="https://master-sum.github.io/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/1.jpg">
