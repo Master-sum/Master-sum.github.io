@@ -24,7 +24,7 @@
   <meta name="description" content="Python">
 <meta property="og:type" content="website">
 <meta property="og:title" content="code change world">
-<meta property="og:url" content="https://master-sum.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:url" content="https://master-sum.github.io/page/2/index.html">
 <meta property="og:site_name" content="code change world">
 <meta property="og:description" content="Python">
 <meta property="og:locale" content="zh_CN">
@@ -32,20 +32,20 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://master-sum.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+<link rel="canonical" href="https://master-sum.github.io/page/2/">
 
 
 <script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
+    isHome : true,
     isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: 多线程 | code change world</title>
+  <title>code change world</title>
   
 
 
@@ -339,54 +339,194 @@
 </noscript>
 
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner index posts-expand">
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://master-sum.github.io/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">
 
-  
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h2 class="collection-header">多线程
-          <small>标签</small>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="Jack.bai">
+      <meta itemprop="description" content="Python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code change world">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="post-title-link" itemprop="url">redis异步消息队列</a>
         </h2>
-      </div>
 
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+
+      <time title="创建时间：2020-09-26 10:22:43 / 修改时间：10:25:06" itemprop="dateCreated datePublished" datetime="2020-09-26T10:22:43+08:00">2020-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a>
+        </span>
+    </span>
+<span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>726字</span>
+    </span>
+  
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"><a href="#一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；" class="headerlink" title="一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；"></a>一、使用redis的list进行push和pop来对消息进行处理，期间可以是多个生产者和消费者；</h3><p>假设：list为空时，pop不出数据就会一直处于pop状态，从而进入死循环，导致资源的浪费，<br>解决方案：1是给线程一个睡眠的时间。2是使用blpop和brpop，b是blocking reading阻塞式读取,blpop弹出list中的第一个元素和返回时间，当不存在元素时返回为空;brpop会阻塞队列，而且每次只会弹出一个消息，如果没有消息则会阻塞。</p>
+<h3 id="二、为了资源占用降低，可以在list为空的时候断开连接"><a href="#二、为了资源占用降低，可以在list为空的时候断开连接" class="headerlink" title="二、为了资源占用降低，可以在list为空的时候断开连接"></a>二、为了资源占用降低，可以在list为空的时候断开连接</h3><h3 id="三、锁冲突处理："><a href="#三、锁冲突处理：" class="headerlink" title="三、锁冲突处理："></a>三、锁冲突处理：</h3><ol>
+<li>抛出异常之后稍等之后重新发起请求</li>
+<li>使用sleep使得线程，暂停休息一下</li>
+<li>将请求放入延时队列中去
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/26/redis%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:41:29+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/python%E5%8D%8F%E7%A8%8B/" itemprop="url">
-            <span itemprop="name">python协程</span>
-          </a>
-      </div>
-
+    <footer class="post-footer">
+        <div class="post-eof"></div>
       
-    </header>
+    </footer>
   </article>
+  
+  
+  
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://master-sum.github.io/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="Jack.bai">
+      <meta itemprop="description" content="Python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code change world">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/" class="post-title-link" itemprop="url">redis持久化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-09-25 22:44:46 / 修改时间：22:45:44" itemprop="dateCreated datePublished" datetime="2020-09-25T22:44:46+08:00">2020-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a>
+        </span>
+    </span>
+<span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>499字</span>
+    </span>
+  
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h2><h4 id="一、redis持久化一个是快照-RDB-另一个是AOF日志。"><a href="#一、redis持久化一个是快照-RDB-另一个是AOF日志。" class="headerlink" title="一、redis持久化一个是快照(RDB)另一个是AOF日志。"></a>一、redis持久化一个是快照(RDB)另一个是AOF日志。</h4><p>快照：内存数据的二进制序列化形式，在内存紧凑；AOF：是操作日志记录，根据日志记录将数据写入数据库中。</p>
+<h4 id="二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"><a href="#二、快照使用COW（CopyOnWrite-写时复制-多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。" class="headerlink" title="二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。"></a>二、快照使用COW（CopyOnWrite,写时复制)多进程机制进行可持久化，fork是由函数glibc的一个子进程，可持久化是由子进程fork来完成，客户端请求由父进程完成。</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/25/redis%E6%8C%81%E4%B9%85%E5%8C%96/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
     </div>
-  </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
   
   
   
 
+
   
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 
 

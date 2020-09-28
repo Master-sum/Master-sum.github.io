@@ -21,18 +21,21 @@
     var CONFIG = {"hostname":"master-sum.github.io","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="Python">
-<meta property="og:type" content="website">
-<meta property="og:title" content="code change world">
-<meta property="og:url" content="https://master-sum.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
+  <meta name="description" content="一、装饰器的作用和功能 作用：是用一个新函数封装旧函数（是旧函数代码不变的情况下增加功能）然后会返回一个新函数，新函数就叫做装饰器，一般为了简化装饰器会用语法糖@新函数来简化 功能：他们是修改其他函数的功能的函数。他们有助于让我们的代码更简短  二、迭代器和生成器的区别 共同点：生成器是一种特殊的迭代器 不同点：语法上，生成器是通过函数的形式中调用 yield 或（）的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试题">
+<meta property="og:url" content="https://master-sum.github.io/2020/09/27/%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
 <meta property="og:site_name" content="code change world">
-<meta property="og:description" content="Python">
+<meta property="og:description" content="一、装饰器的作用和功能 作用：是用一个新函数封装旧函数（是旧函数代码不变的情况下增加功能）然后会返回一个新函数，新函数就叫做装饰器，一般为了简化装饰器会用语法糖@新函数来简化 功能：他们是修改其他函数的功能的函数。他们有助于让我们的代码更简短  二、迭代器和生成器的区别 共同点：生成器是一种特殊的迭代器 不同点：语法上，生成器是通过函数的形式中调用 yield 或（）的">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-27T13:58:56.006Z">
+<meta property="article:modified_time" content="2020-09-27T14:03:16.636Z">
 <meta property="article:author" content="Jack.bai">
+<meta property="article:tag" content="python面试">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://master-sum.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+<link rel="canonical" href="https://master-sum.github.io/2020/09/27/%E9%9D%A2%E8%AF%95%E9%A2%98/">
 
 
 <script class="page-configurations">
@@ -40,12 +43,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: 多线程 | code change world</title>
+  <title>面试题 | code change world</title>
   
 
 
@@ -183,7 +186,7 @@
   </div>
 
   <aside class="sidebar">
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -195,6 +198,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">一、装饰器的作用和功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%92%8C%E7%94%9F%E6%88%90%E5%99%A8%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">二、迭代器和生成器的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E7%8C%B4%E5%AD%90%E8%A1%A5%E4%B8%81%E4%B8%8E%E9%B8%AD%E5%AD%90%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.</span> <span class="nav-text">三、什么是猴子补丁与鸭子协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="nav-number">4.</span> <span class="nav-text">四、大数据的文件读取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E7%AE%80%E5%8D%95%E8%B0%88%E4%B8%80%E4%B8%8BGIL"><span class="nav-number">5.</span> <span class="nav-text">五、简单谈一下GIL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AD%E3%80%81find%E5%92%8Cgrep%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">六、find和grep的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E7%BA%BF%E4%B8%8A%E6%9C%8D%E5%8A%A1%E6%9F%90%E7%A7%8D%E5%8E%9F%E5%9B%A0%E6%8C%82%E6%8E%89%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="nav-number">7.</span> <span class="nav-text">七、线上服务某种原因挂掉怎么办</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98python%E7%9A%84%E8%BF%90%E8%A1%8C%E6%95%88%E7%8E%87"><span class="nav-number">8.</span> <span class="nav-text">八、如何提高python的运行效率</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -339,53 +343,140 @@
 </noscript>
 
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner post posts-expand">
       
 
       
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h2 class="collection-header">多线程
-          <small>标签</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://master-sum.github.io/2020/09/27/%E9%9D%A2%E8%AF%95%E9%A2%98/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="Jack.bai">
+      <meta itemprop="description" content="Python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code change world">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面试题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+
+      <time title="创建时间：2020-09-27 21:58:56 / 修改时间：22:03:16" itemprop="dateCreated datePublished" datetime="2020-09-27T21:58:56+08:00">2020-09-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+        </span>
+    </span>
+<span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1,181字</span>
+    </span>
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h4 id="一、装饰器的作用和功能"><a href="#一、装饰器的作用和功能" class="headerlink" title="一、装饰器的作用和功能"></a>一、装饰器的作用和功能</h4><ol>
+<li>作用：是用一个新函数封装旧函数（是旧函数代码不变的情况下增加功能）然后会返回一个新函数，新函数就叫做装饰器，一般为了简化装饰器会用语法糖@新函数来简化</li>
+<li>功能：他们是修改其他函数的功能的函数。他们有助于让我们的代码更简短</li>
+</ol>
+<h4 id="二、迭代器和生成器的区别"><a href="#二、迭代器和生成器的区别" class="headerlink" title="二、迭代器和生成器的区别"></a>二、迭代器和生成器的区别</h4><ol>
+<li>共同点：生成器是一种特殊的迭代器</li>
+<li>不同点：语法上，生成器是通过函数的形式中调用 yield 或（）的<a id="more"></a>
+形式创建的；用法上：生成器在调用next（）函数或for循环中，所有过程被执行，且返回值，迭代器在调用next（）函数或for循环中，所有值被返回，没有其他过程或说动作。</li>
+</ol>
+<h4 id="三、什么是猴子补丁与鸭子协议"><a href="#三、什么是猴子补丁与鸭子协议" class="headerlink" title="三、什么是猴子补丁与鸭子协议"></a>三、什么是猴子补丁与鸭子协议</h4><h4 id="四、大数据的文件读取"><a href="#四、大数据的文件读取" class="headerlink" title="四、大数据的文件读取"></a>四、大数据的文件读取</h4><h4 id="五、简单谈一下GIL"><a href="#五、简单谈一下GIL" class="headerlink" title="五、简单谈一下GIL"></a>五、简单谈一下GIL</h4><ol>
+<li>GIL 是python的全局解释器锁，同一进程中假如有多个线程运行，一个线程在运行python程序的时候会霸占python解释器（加了一把锁即GIL），使该进程内的其他线程无法运行，等该线程运行完后其他线程才能运行。如果线程运行过程中遇到耗时操作，则解释器锁解开，使其他线程运行。所以在多线程中，线程的运行仍是有先后顺序的，并不是同时进行。多进程中因为每个进程都能被系统分配资源，相当于每个进程有了一个python解释器，所以多进程可以实现多个进程的同时运行，缺点是进程系统资源开销大</li>
+</ol>
+<h4 id="六、find和grep的作用"><a href="#六、find和grep的作用" class="headerlink" title="六、find和grep的作用"></a>六、find和grep的作用</h4><ol>
+<li>grep是通过文件找内容，find 是通过内容找文件</li>
+<li>Linux系统中grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹 配的行打印出来.而linux下的find,在目录结构中搜索文件，并执行指定的操作。此命令提供了相当多的查找条件，功能很强大。所以简单点说说，grep是查找匹配条件的行，find是搜索匹配条件的文件</li>
+</ol>
+<h4 id="七、线上服务某种原因挂掉怎么办"><a href="#七、线上服务某种原因挂掉怎么办" class="headerlink" title="七、线上服务某种原因挂掉怎么办"></a>七、线上服务某种原因挂掉怎么办</h4><ol>
+<li>Linux下的后台进程管理利器 supervisor，每次文件修改后再Linux执行 service supervisord restart</li>
+</ol>
+<h4 id="八、如何提高python的运行效率"><a href="#八、如何提高python的运行效率" class="headerlink" title="八、如何提高python的运行效率"></a>八、如何提高python的运行效率</h4><pre><code> 1、使用生成器，因为可以节约大量内存
+ 2、循环代码优化，避免过多重复代码的执行
+ 3、核心模块用Cython  PyPy等，提高效率
+ 4、多进程、多线程、协程
+ 5、多个if elif条件判断，可以把最有可能先发生的条件放到前面写，这样可以减少程序判断的次数，提高效率</code></pre>
+<p>九、常用的Linux命令</p>
+<p>十、python中的yield用法</p>
+<p>十一、python如何进行内存管理</p>
+<p>十二、描述数组、链表、队列、堆栈的区别</p>
+<p>十三、AJAX是什么，如何使用AJAX</p>
+<p>十四、常见的HTTP状态码有哪些<br>十五、post和get的区别<br>十六、cookie和session的区别<br>十七、创建一个简单的tcp服务器需要哪些流程<br>十八、Django中当一个用户登陆A应用服务器，然后下次请求被nginx代理到B应用服务器会出现什么影响<br>十九、跨域请求问题Django怎么解决的（原理）<br>二十、请描述一下Django的框架<br>二十一、Django对数据查询的结果排序怎么做，降序怎么做，查询大于某个字段怎么做<br>二十二、说一下Django，MIDDLEWARES中间件的作用<br>二十三、对Django的认识<br>二十四、Django重定向是如何实现，用的什么状态码<br>二十五、ngnix的正向代理和反向代理<br>二十六、Tornado的核是什么<br>二十七、Django本身提供了runnserver，为什么不能用来部署<br>二十八、scrapy和scrapy-redis有什么区别，为什么选择redis数据库<br>二十九、你使用过什么爬虫框架，其优缺点<br>三十、你常用的mysql引擎有哪些，个引擎的区别<br>三十一、描述scrapy框架运行机制<br>三十二、什么是关联查询，有哪些<br>三十三、写爬虫是多进程好，还是多线程好，为什么<br>三十四、数据库的优化<br>三十五、常见的反爬虫和应对方法<br>三十六、分布式爬虫主要解决什么问题<br>三十七、爬虫过程中验证码怎么处理<br>三十八、python的继承MRO</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:41:29+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/python%E5%8D%8F%E7%A8%8B/" itemprop="url">
-            <span itemprop="name">python协程</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python%E9%9D%A2%E8%AF%95/" rel="tag"># python面试</a>
+          </div>
 
-      
-    </header>
+        
+
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                  <a href="/2020/09/27/%E4%BB%80%E4%B9%88%E6%98%AFnumpy/" rel="next" title="什么是numpy"> <i class="fa fa-chevron-left"></i>
+                     什么是numpy
+                  </a>
+            </div>
+            <div class="post-nav-item">
+                  <a href="/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" rel="prev" title="redis雪崩与穿透的解决方案">
+                     redis雪崩与穿透的解决方案<i class="fa fa-chevron-right"></i>
+                  </a>
+            </div>
+          </div>
+    </footer>
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 

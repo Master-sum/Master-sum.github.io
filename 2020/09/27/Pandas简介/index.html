@@ -21,18 +21,22 @@
     var CONFIG = {"hostname":"master-sum.github.io","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="Python">
-<meta property="og:type" content="website">
-<meta property="og:title" content="code change world">
-<meta property="og:url" content="https://master-sum.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
+  <meta name="description" content="一、　　Pandas简介1、Python Data Analysis Library 或 pandas 是基于NumPy 的一种工具，该工具是为了解决数据分析任务而创建的。Pandas 纳入了大量库和一些标准的数据模型，提供了高效地操作大型数据集所需的工具。pandas提供了大量能使我们快速便捷地处理数据的函数和方法。你很快就会发现，它是使Python成为强大而高效的数据分析环境的重要因素之一。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是pandas">
+<meta property="og:url" content="https://master-sum.github.io/2020/09/27/Pandas%E7%AE%80%E4%BB%8B/index.html">
 <meta property="og:site_name" content="code change world">
-<meta property="og:description" content="Python">
+<meta property="og:description" content="一、　　Pandas简介1、Python Data Analysis Library 或 pandas 是基于NumPy 的一种工具，该工具是为了解决数据分析任务而创建的。Pandas 纳入了大量库和一些标准的数据模型，提供了高效地操作大型数据集所需的工具。pandas提供了大量能使我们快速便捷地处理数据的函数和方法。你很快就会发现，它是使Python成为强大而高效的数据分析环境的重要因素之一。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-27T14:12:42.204Z">
+<meta property="article:modified_time" content="2020-09-27T14:13:11.713Z">
 <meta property="article:author" content="Jack.bai">
+<meta property="article:tag" content="数据分析">
+<meta property="article:tag" content="pandas">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://master-sum.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+<link rel="canonical" href="https://master-sum.github.io/2020/09/27/Pandas%E7%AE%80%E4%BB%8B/">
 
 
 <script class="page-configurations">
@@ -40,12 +44,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: 多线程 | code change world</title>
+  <title>什么是pandas | code change world</title>
   
 
 
@@ -183,7 +187,7 @@
   </div>
 
   <aside class="sidebar">
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -195,6 +199,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81-Pandas%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">一、　　Pandas简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%E3%80%81Python-Data-Analysis-Library-%E6%88%96-pandas-%E6%98%AF%E5%9F%BA%E4%BA%8ENumPy-%E7%9A%84%E4%B8%80%E7%A7%8D%E5%B7%A5%E5%85%B7%EF%BC%8C%E8%AF%A5%E5%B7%A5%E5%85%B7%E6%98%AF%E4%B8%BA%E4%BA%86%E8%A7%A3%E5%86%B3%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%BB%BB%E5%8A%A1%E8%80%8C%E5%88%9B%E5%BB%BA%E7%9A%84%E3%80%82Pandas-%E7%BA%B3%E5%85%A5%E4%BA%86%E5%A4%A7%E9%87%8F%E5%BA%93%E5%92%8C%E4%B8%80%E4%BA%9B%E6%A0%87%E5%87%86%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%EF%BC%8C%E6%8F%90%E4%BE%9B%E4%BA%86%E9%AB%98%E6%95%88%E5%9C%B0%E6%93%8D%E4%BD%9C%E5%A4%A7%E5%9E%8B%E6%95%B0%E6%8D%AE%E9%9B%86%E6%89%80%E9%9C%80%E7%9A%84%E5%B7%A5%E5%85%B7%E3%80%82pandas%E6%8F%90%E4%BE%9B%E4%BA%86%E5%A4%A7%E9%87%8F%E8%83%BD%E4%BD%BF%E6%88%91%E4%BB%AC%E5%BF%AB%E9%80%9F%E4%BE%BF%E6%8D%B7%E5%9C%B0%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E7%9A%84%E5%87%BD%E6%95%B0%E5%92%8C%E6%96%B9%E6%B3%95%E3%80%82%E4%BD%A0%E5%BE%88%E5%BF%AB%E5%B0%B1%E4%BC%9A%E5%8F%91%E7%8E%B0%EF%BC%8C%E5%AE%83%E6%98%AF%E4%BD%BFPython%E6%88%90%E4%B8%BA%E5%BC%BA%E5%A4%A7%E8%80%8C%E9%AB%98%E6%95%88%E7%9A%84%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%8E%AF%E5%A2%83%E7%9A%84%E9%87%8D%E8%A6%81%E5%9B%A0%E7%B4%A0%E4%B9%8B%E4%B8%80%E3%80%82"><span class="nav-number">1.1.</span> <span class="nav-text">1、Python Data Analysis Library 或 pandas 是基于NumPy 的一种工具，该工具是为了解决数据分析任务而创建的。Pandas 纳入了大量库和一些标准的数据模型，提供了高效地操作大型数据集所需的工具。pandas提供了大量能使我们快速便捷地处理数据的函数和方法。你很快就会发现，它是使Python成为强大而高效的数据分析环境的重要因素之一。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%E3%80%81Pandas-%E6%98%AFpython%E7%9A%84%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%8C%85%EF%BC%8C%E6%9C%80%E5%88%9D%E7%94%B1AQR-Capital-Management%E4%BA%8E2008%E5%B9%B44%E6%9C%88%E5%BC%80%E5%8F%91%EF%BC%8C%E5%B9%B6%E4%BA%8E2009%E5%B9%B4%E5%BA%95%E5%BC%80%E6%BA%90%E5%87%BA%E6%9D%A5%EF%BC%8C%E7%9B%AE%E5%89%8D%E7%94%B1%E4%B8%93%E6%B3%A8%E4%BA%8EPython%E6%95%B0%E6%8D%AE%E5%8C%85%E5%BC%80%E5%8F%91%E7%9A%84PyData%E5%BC%80%E5%8F%91team%E7%BB%A7%E7%BB%AD%E5%BC%80%E5%8F%91%E5%92%8C%E7%BB%B4%E6%8A%A4%EF%BC%8C%E5%B1%9E%E4%BA%8EPyData%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%B8%80%E9%83%A8%E5%88%86%E3%80%82Pandas%E6%9C%80%E5%88%9D%E8%A2%AB%E4%BD%9C%E4%B8%BA%E9%87%91%E8%9E%8D%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E8%80%8C%E5%BC%80%E5%8F%91%E5%87%BA%E6%9D%A5%EF%BC%8C%E5%9B%A0%E6%AD%A4%EF%BC%8Cpandas%E4%B8%BA%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E5%88%86%E6%9E%90%E6%8F%90%E4%BE%9B%E4%BA%86%E5%BE%88%E5%A5%BD%E7%9A%84%E6%94%AF%E6%8C%81%E3%80%82-Pandas%E7%9A%84%E5%90%8D%E7%A7%B0%E6%9D%A5%E8%87%AA%E4%BA%8E%E9%9D%A2%E6%9D%BF%E6%95%B0%E6%8D%AE%EF%BC%88panel-data%EF%BC%89%E5%92%8Cpython%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%88data-analysis%EF%BC%89%E3%80%82panel-data%E6%98%AF%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%B8%AD%E5%85%B3%E4%BA%8E%E5%A4%9A%E7%BB%B4%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E4%B8%80%E4%B8%AA%E6%9C%AF%E8%AF%AD%EF%BC%8C%E5%9C%A8Pandas%E4%B8%AD%E4%B9%9F%E6%8F%90%E4%BE%9B%E4%BA%86panel%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%82"><span class="nav-number">1.2.</span> <span class="nav-text">2、Pandas 是python的一个数据分析包，最初由AQR Capital Management于2008年4月开发，并于2009年底开源出来，目前由专注于Python数据包开发的PyData开发team继续开发和维护，属于PyData项目的一部分。Pandas最初被作为金融数据分析工具而开发出来，因此，pandas为时间序列分析提供了很好的支持。 Pandas的名称来自于面板数据（panel data）和python数据分析（data analysis）。panel data是经济学中关于多维数据集的一个术语，在Pandas中也提供了panel的数据类型。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%E3%80%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">3、数据结构：</span></a></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -339,53 +344,111 @@
 </noscript>
 
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner post posts-expand">
       
 
       
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h2 class="collection-header">多线程
-          <small>标签</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://master-sum.github.io/2020/09/27/Pandas%E7%AE%80%E4%BB%8B/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="Jack.bai">
+      <meta itemprop="description" content="Python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code change world">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          什么是pandas
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+
+      <time title="创建时间：2020-09-27 22:12:42 / 修改时间：22:13:11" itemprop="dateCreated datePublished" datetime="2020-09-27T22:12:42+08:00">2020-09-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+        </span>
+    </span>
+<span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>546字</span>
+    </span>
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h4 id="一、-Pandas简介"><a href="#一、-Pandas简介" class="headerlink" title="一、　　Pandas简介"></a>一、　　Pandas简介</h4><h5 id="1、Python-Data-Analysis-Library-或-pandas-是基于NumPy-的一种工具，该工具是为了解决数据分析任务而创建的。Pandas-纳入了大量库和一些标准的数据模型，提供了高效地操作大型数据集所需的工具。pandas提供了大量能使我们快速便捷地处理数据的函数和方法。你很快就会发现，它是使Python成为强大而高效的数据分析环境的重要因素之一。"><a href="#1、Python-Data-Analysis-Library-或-pandas-是基于NumPy-的一种工具，该工具是为了解决数据分析任务而创建的。Pandas-纳入了大量库和一些标准的数据模型，提供了高效地操作大型数据集所需的工具。pandas提供了大量能使我们快速便捷地处理数据的函数和方法。你很快就会发现，它是使Python成为强大而高效的数据分析环境的重要因素之一。" class="headerlink" title="1、Python Data Analysis Library 或 pandas 是基于NumPy 的一种工具，该工具是为了解决数据分析任务而创建的。Pandas 纳入了大量库和一些标准的数据模型，提供了高效地操作大型数据集所需的工具。pandas提供了大量能使我们快速便捷地处理数据的函数和方法。你很快就会发现，它是使Python成为强大而高效的数据分析环境的重要因素之一。"></a>1、Python Data Analysis Library 或 pandas 是基于NumPy 的一种工具，该工具是为了解决数据分析任务而创建的。Pandas 纳入了大量库和一些标准的数据模型，提供了高效地操作大型数据集所需的工具。pandas提供了大量能使我们快速便捷地处理数据的函数和方法。你很快就会发现，它是使Python成为强大而高效的数据分析环境的重要因素之一。</h5><a id="more"></a>
+
+<h5 id="2、Pandas-是python的一个数据分析包，最初由AQR-Capital-Management于2008年4月开发，并于2009年底开源出来，目前由专注于Python数据包开发的PyData开发team继续开发和维护，属于PyData项目的一部分。Pandas最初被作为金融数据分析工具而开发出来，因此，pandas为时间序列分析提供了很好的支持。-Pandas的名称来自于面板数据（panel-data）和python数据分析（data-analysis）。panel-data是经济学中关于多维数据集的一个术语，在Pandas中也提供了panel的数据类型。"><a href="#2、Pandas-是python的一个数据分析包，最初由AQR-Capital-Management于2008年4月开发，并于2009年底开源出来，目前由专注于Python数据包开发的PyData开发team继续开发和维护，属于PyData项目的一部分。Pandas最初被作为金融数据分析工具而开发出来，因此，pandas为时间序列分析提供了很好的支持。-Pandas的名称来自于面板数据（panel-data）和python数据分析（data-analysis）。panel-data是经济学中关于多维数据集的一个术语，在Pandas中也提供了panel的数据类型。" class="headerlink" title="2、Pandas 是python的一个数据分析包，最初由AQR Capital Management于2008年4月开发，并于2009年底开源出来，目前由专注于Python数据包开发的PyData开发team继续开发和维护，属于PyData项目的一部分。Pandas最初被作为金融数据分析工具而开发出来，因此，pandas为时间序列分析提供了很好的支持。 Pandas的名称来自于面板数据（panel data）和python数据分析（data analysis）。panel data是经济学中关于多维数据集的一个术语，在Pandas中也提供了panel的数据类型。"></a>2、Pandas 是python的一个数据分析包，最初由AQR Capital Management于2008年4月开发，并于2009年底开源出来，目前由专注于Python数据包开发的PyData开发team继续开发和维护，属于PyData项目的一部分。Pandas最初被作为金融数据分析工具而开发出来，因此，pandas为时间序列分析提供了很好的支持。 Pandas的名称来自于面板数据（panel data）和python数据分析（data analysis）。panel data是经济学中关于多维数据集的一个术语，在Pandas中也提供了panel的数据类型。</h5><h5 id="3、数据结构："><a href="#3、数据结构：" class="headerlink" title="3、数据结构："></a>3、数据结构：</h5><p>Series：一维数组，与Numpy中的一维array类似。二者与Python基本的数据结构List也很相近，其区别是：List中的元素可以是不同的数据类型，而Array和Series中则只允许存储相同的数据类型，这样可以更有效的使用内存，提高运算效率。<br>Time- Series：以时间为索引的Series。<br>DataFrame：二维的表格型数据结构。很多功能与R中的data.frame类似。可以将DataFrame理解为Series的容器。以下的内容主要以DataFrame为主。<br>Panel ：三维的数组，可以理解为DataFrame的容器。<br>Pandas 有两种自己独有的基本数据结构。读者应该注意的是，它固然有着两种数据结构，因为它依然是 Python 的一个库，所以，Python 中有的数据类型在这里依然适用，也同样还可以使用类自己定义数据类型。只不过，Pandas 里面又定义了两种数据类型：Series 和 DataFrame，它们让数据操作更简单了。</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T17:41:29+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/python%E5%8D%8F%E7%A8%8B/" itemprop="url">
-            <span itemprop="name">python协程</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag"># 数据分析</a>
+              <a href="/tags/pandas/" rel="tag"># pandas</a>
+          </div>
 
-      
-    </header>
+        
+
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                  <a href="/2020/09/27/%E4%BB%80%E4%B9%88%E6%98%AFnumpy/" rel="prev" title="什么是numpy">
+                     什么是numpy<i class="fa fa-chevron-right"></i>
+                  </a>
+            </div>
+          </div>
+    </footer>
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
