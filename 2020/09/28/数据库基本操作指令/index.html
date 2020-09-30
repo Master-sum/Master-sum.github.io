@@ -21,21 +21,21 @@
     var CONFIG = {"hostname":"master-sum.github.io","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="一、什么是Hyperloglog Hyperloglog是一种数据结构，用来粗糙的大量数据去重统计，标准误差在0.81%。 Hyperloglog指令pfadd和pfcount分别是增加计数和获取统计数 127.0.0.1:6379&gt; pfadd codehole user u (integer) 1 127.0.0.1:6379&gt; pfcount codehole (integer)">
+  <meta name="description" content="1、select 查询结果    如: [学号,平均成绩：组函数avg(成绩)]2、from 从哪张表中查找数据   如:[涉及到成绩：成绩表score]3、where 查询条件    如:[b.课程号&#x3D;’0003’ and b.成绩&gt;80]4、group by 分组    如:每个学生的平均：按学号分组,MySQL中可以不用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="理解Hyperloglog">
-<meta property="og:url" content="https://master-sum.github.io/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/index.html">
+<meta property="og:title" content="数据库基本操作指令">
+<meta property="og:url" content="https://master-sum.github.io/2020/09/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4/index.html">
 <meta property="og:site_name" content="code change world">
-<meta property="og:description" content="一、什么是Hyperloglog Hyperloglog是一种数据结构，用来粗糙的大量数据去重统计，标准误差在0.81%。 Hyperloglog指令pfadd和pfcount分别是增加计数和获取统计数 127.0.0.1:6379&gt; pfadd codehole user u (integer) 1 127.0.0.1:6379&gt; pfcount codehole (integer)">
+<meta property="og:description" content="1、select 查询结果    如: [学号,平均成绩：组函数avg(成绩)]2、from 从哪张表中查找数据   如:[涉及到成绩：成绩表score]3、where 查询条件    如:[b.课程号&#x3D;’0003’ and b.成绩&gt;80]4、group by 分组    如:每个学生的平均：按学号分组,MySQL中可以不用">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-26T09:56:09.568Z">
-<meta property="article:modified_time" content="2020-09-26T09:56:09.568Z">
+<meta property="article:published_time" content="2020-09-28T13:29:09.494Z">
+<meta property="article:modified_time" content="2020-09-28T13:29:09.494Z">
 <meta property="article:author" content="Jack.bai">
-<meta property="article:tag" content="redis进阶">
+<meta property="article:tag" content="sql操作指令">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://master-sum.github.io/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/">
+<link rel="canonical" href="https://master-sum.github.io/2020/09/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4/">
 
 
 <script class="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>理解Hyperloglog | code change world</title>
+  <title>数据库基本操作指令 | code change world</title>
   
 
 
@@ -186,7 +186,7 @@
   </div>
 
   <aside class="sidebar">
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -198,7 +198,6 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AFHyperloglog"><span class="nav-number">1.</span> <span class="nav-text">一、什么是Hyperloglog</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Hyperloglog%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">二、Hyperloglog作用</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -352,7 +351,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://master-sum.github.io/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/">
+    <link itemprop="mainEntityOfPage" href="https://master-sum.github.io/2020/09/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/1.jpg">
@@ -368,7 +367,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          理解Hyperloglog
+          数据库基本操作指令
         </h1>
 
         <div class="post-meta-container">
@@ -379,7 +378,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-09-26 17:56:09" itemprop="dateCreated datePublished" datetime="2020-09-26T17:56:09+08:00">2020-09-26</time>
+      <time title="创建时间：2020-09-28 21:29:09" itemprop="dateCreated datePublished" datetime="2020-09-28T21:29:09+08:00">2020-09-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -387,7 +386,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a>
+          <a href="/categories/sql/" itemprop="url" rel="index"><span itemprop="name">sql</span></a>
         </span>
     </span>
 <span class="post-meta-item" title="本文字数">
@@ -395,10 +394,10 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>178字</span>
+      <span>361字</span>
     </span>
  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
- <span id="/2020/09/26/%E7%90%86%E8%A7%A3Hyperloglog/" class="post-meta-item leancloud_visitors" data-flag-title="理解Hyperloglog" title="阅读次数">
+ <span id="/2020/09/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4/" class="post-meta-item leancloud_visitors" data-flag-title="数据库基本操作指令" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -426,18 +425,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h4 id="一、什么是Hyperloglog"><a href="#一、什么是Hyperloglog" class="headerlink" title="一、什么是Hyperloglog"></a>一、什么是Hyperloglog</h4><ol>
-<li>Hyperloglog是一种数据结构，用来粗糙的大量数据去重统计，标准误差在0.81%。</li>
-<li>Hyperloglog指令pfadd和pfcount分别是增加计数和获取统计数<br> 127.0.0.1:6379&gt; pfadd codehole user u<br> (integer) 1<br> 127.0.0.1:6379&gt; pfcount codehole<br> (integer) 2<br> 127.0.0.1:6379&gt;<br> 3.pfmerge对两个相似的数据进行合并<a id="more"></a>
-
-</li>
-</ol>
-<h4 id="二、Hyperloglog作用"><a href="#二、Hyperloglog作用" class="headerlink" title="二、Hyperloglog作用"></a>二、Hyperloglog作用</h4><ol>
-<li>用于粗糙的统计</li>
-<li>三、Hyperloglog优缺点</li>
-<li>一个需要12KB的内存空间，不适合大量人员数据；Hyperloglog开始由稀疏矩阵存储随着统计数量的增加才会转为稠密矩阵而达到12KB。</li>
-<li>Hyperloglog存在16384个桶位，一个桶位占6个bit，固（16384*6）/8=12KB</li>
-</ol>
+        <p>1、select 查询结果    如: [学号,平均成绩：组函数avg(成绩)]<br>2、from 从哪张表中查找数据   如:[涉及到成绩：成绩表score]<br>3、where 查询条件    如:[b.课程号=’0003’ and b.成绩&gt;80]<br>4、group by 分组    如:<a href="oracle,SQLserver%E4%B8%AD%E5%87%BA%E7%8E%B0%E5%9C%A8select%E5%AD%90%E5%8F%A5%E5%90%8E%E7%9A%84%E9%9D%9E%E5%88%86%E7%BB%84%E5%87%BD%E6%95%B0%EF%BC%8C%E5%BF%85%E9%A1%BB%E5%87%BA%E7%8E%B0%E5%9C%A8groupby%E5%AD%90%E5%8F%A5%E5%90%8E%E5%87%BA%E7%8E%B0">每个学生的平均：按学号分组</a>,MySQL中可以不用</p>
+<a id="more"></a>
+<p>5、having 对分组结果指定条件    如:[大于60分]<br>6、order by 对查询结果排序    如:[增序: 成绩  ASC / 降序: 成绩 DESC];<br>7、limit使用limt子句返回topN（对应这个问题返回的成绩前两名）如:[ limit  2 ==&gt;从0索引开始读取2个]<br>limit==&gt;从0索引开始 [0,N-1]<br>① select * from table limit 2,1;<br>//含义是跳过2条取出1条数据，limit后面是从第2条开始读，读取1条信息，即读取第3条数据<br>② select * from table limit 2 offset 1;<br>//含义是从第1条（不包括）数据开始取出2条数据，limit后面跟的是2条数据，offset后面是从第1条开始读取，即读取第2,3条<br>7、组函数: 去重 distinct()  统计总数sum()   计算个数count()  平均数avg()  最大值max() 最小数min()<br>8、多表连接: 内连接(省略默认inner) join …on..左连接left join tableName as b on a.key ==b.key右连接right join  连接union(无重复(过滤去重))和union all(有重复[不过滤去重])<br>9、–union 并集<br>10、–union all(有重复)<br>11、–intersect 交集<br>12、–minus(except) 相减(差集)</p>
 
     </div>
 
@@ -447,7 +437,7 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/redis%E8%BF%9B%E9%98%B6/" rel="tag"># redis进阶</a>
+              <a href="/tags/sql%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4/" rel="tag"># sql操作指令</a>
           </div>
 
         
@@ -455,13 +445,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                  <a href="/2020/09/26/redis%E9%9B%AA%E5%B4%A9%E4%B8%8E%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" rel="next" title="redis雪崩与穿透的解决方案"> <i class="fa fa-chevron-left"></i>
-                     redis雪崩与穿透的解决方案
+                  <a href="/2020/09/29/python%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="next" title="Python是如何进行内存管理的"> <i class="fa fa-chevron-left"></i>
+                     Python是如何进行内存管理的
                   </a>
             </div>
             <div class="post-nav-item">
-                  <a href="/2020/09/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%9E%8B/" rel="prev" title="python单例模型">
-                     python单例模型<i class="fa fa-chevron-right"></i>
+                  <a href="/2020/09/27/Pandas%E7%AE%80%E4%BB%8B/" rel="prev" title="什么是pandas">
+                     什么是pandas<i class="fa fa-chevron-right"></i>
                   </a>
             </div>
           </div>
